@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import bcryptjs from 'bcryptjs';
 import { errorHandler } from "../utils/error.js";
+import { verifyPassword } from "../utils/utility.js";
 
 export const signup = async (req, res, next) => {
     //console.log(req.body);
@@ -9,7 +10,11 @@ export const signup = async (req, res, next) => {
 
     if(!username || !email || !password || username ==='' || email === '' || password === ''){
         next(errorHandler(400, 'All fields are required'));
-    } 
+    }
+
+    if(!verifyPassword(password)){
+        next(errorHandler(402, 'Wrong password: pleas follow the instructions for a correct password.'));
+    }
 
     const hashedPassword = bcryptjs.hashSync(password, 10);
 
