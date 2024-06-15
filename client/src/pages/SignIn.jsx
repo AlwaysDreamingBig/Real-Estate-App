@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { extractErrorMessage } from '../../../api/utils/error';
+import { useDispatch, useSelector } from 'react-redux';
+import { signInStart, signInFailure, signInSuccess } from '../redux/user/userSlice'
 
 
 {/*
@@ -23,10 +25,10 @@ export default function SignIn() {
     password: '',
   });
 
-  const [error, setError] = useState(null);
+  const { loading, error} = useSelector((state) => state.user);
   const [success, setSuccess] = useState(null);
-  const [loading, setLoading] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
 
   const handleChange = (e) => {
@@ -44,8 +46,7 @@ export default function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setLoading(true);
-    setError(null);
+    dispatch(signInStart());
     setSuccess(null);
 
     try {
@@ -67,21 +68,18 @@ export default function SignIn() {
       const data = await res.json();
 
       if(data.success === false){
-        setError(data.message);
-        setLoading(false);
+        dispatch(signInFailure(data.message));
         return;
       }
 
-      setLoading(false);
+      dispatch(signInSuccess(data))
       setSuccess(data);
-      setError(null);
 
       //If everything is alright navigate to the Sign(in page
       navigate('/');
 
     } catch (error) {
-      setError(error.message);
-      setLoading(false);
+      dispatch(signInFailure(error.message))
     }
   };
 
