@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { extractErrorMessage } from '../../../api/utils/error';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-
+import OAuth from '../components/OAuth.jsx';
 
 {/*
 *my- is to add space on the top and bottom
@@ -129,23 +129,29 @@ export default function SignUp() {
           onChange={handleChange}
         />
 
-        <button
-          disabled={loading}
-          className="bg-slate-800 text-white p-3 rounded-lg uppercase hover:opacity-90 disabled:opacity-65"
-          type="submit"
-        >
-          {loading ? 'Loading...' : 'Sign Up'}
-          
-        </button>
+        <div className='flex flex-col gap-2'>
+          <button
+            disabled={loading}
+            className="bg-slate-800 text-white p-2 rounded-lg uppercase hover:opacity-90 disabled:opacity-65"
+            type="submit"
+          >
+            {loading ? 'Loading...' : 'Sign Up'}
+          </button>
+
+          <OAuth />
+        </div>
       </form>
 
       <div className="flex gap-2 mt-3 font-bold">
         <p> Have an account?</p>
+
         <Link to="/sign-in">
           <span className="text-blue-700"> Sign in here.</span>
         </Link>
+
         <div className="relative group pl-52">
           <FontAwesomeIcon icon={faInfoCircle} className="text-gray-500 ml-2 cursor-pointer" />
+          
           <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block w-64 p-2 bg-gray-800 text-white text-sm rounded">
             Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one number.
           </div>

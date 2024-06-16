@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
 import bcryptjs from 'bcryptjs';
 import { errorHandler } from "../utils/error.js";
-import { verifyPassword } from "../utils/utility.js";
+import { generateRandomPassword, verifyPassword } from "../utils/utility.js";
 import jwt from 'jsonwebtoken';
 
 export const signup = async (req, res, next) => {
@@ -75,5 +75,52 @@ export const signin = async (req, res, next) => {
         
     } catch (error) {
         next(error);
+    }
+}
+
+export const google = async (req, res, next) => {
+    try {
+        const user = await User.findOne({ email: req.body.email })
+
+        if (user) {
+
+            {/** Creating the jwt token for auth,
+            _id is the id set by MongoDB automatically
+            process.env.JWT_SECRET is our secret key
+            */}
+
+            const token = jwt.sign({ id:user._id }, process.env.JWT_SECRET);
+            //To prevent leak of the password when the function returns the user info: separate the password from the rest of the user info
+            const { password:pass, ...rest } = user._doc;
+
+            //res.cookie('access_token', token, {httpOnly:true, expires: new Date(Date.now() + 24 * 60 * 60)});
+            res.cookie('access_token', token, { httpOnly:true })
+                .status(200).json(rest);
+
+        } else {//We create a new user
+            
+            const generatedPassword = generateRandomPassword(12);
+            const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
+
+            const newUser = new User({
+                username : req.body.name.split(" ").join("").toLowerCase() + Math.random().toString(36).slice(-4),
+                email : req.body.email,
+                password : hashedPassword,
+                avatar: req.body.photo
+            });
+
+            await newUser.save();
+
+            const token = jwt.sign({ id:newUser._id }, process.env.JWT_SECRET);
+            //To prevent leak of the password when the function returns the user info: separate the password from the rest of the user info
+            const { password:pass, ...rest } = newUser._doc;
+
+            //res.cookie('access_token', token, {httpOnly:true, expires: new Date(Date.now() + 24 * 60 * 60)});
+            res.cookie('access_token', token, { httpOnly:true })
+                .status(200).json(rest);
+
+        }
+    } catch (error) {
+        
     }
 }

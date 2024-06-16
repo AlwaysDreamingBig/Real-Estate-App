@@ -19,3 +19,27 @@ export const verifyPassword = (password) => {
     // If all conditions pass, return true
     return true;
 }
+
+export const generateRandomPassword = (length ) => {
+    const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
+    const numberChars = '0123456789';
+    const allChars = uppercaseChars + lowercaseChars + numberChars;
+
+    let password = '';
+
+    // Ensure the password contains at least one uppercase letter, one lowercase letter, and one number
+    password += uppercaseChars.charAt(Math.floor(Math.random() * uppercaseChars.length));
+    password += lowercaseChars.charAt(Math.floor(Math.random() * lowercaseChars.length));
+    password += numberChars.charAt(Math.floor(Math.random() * numberChars.length));
+
+    // Generate the remaining characters randomly
+    for (let i = 3; i < length; i++) {
+        password += allChars.charAt(Math.floor(Math.random() * allChars.length));
+    }
+
+    // Shuffle the password to ensure random order
+    password = password.split('').sort(() => 0.5 - Math.random()).join('');
+
+    return password;
+}
