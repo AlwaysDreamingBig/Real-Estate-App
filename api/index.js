@@ -5,6 +5,7 @@ import cors from 'cors';
 
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
+import cookieParser from 'cookie-parser';
 
         {/** Database connexion */}
 
@@ -24,6 +25,9 @@ app.use(express.json());
 
              {/**this line is to enable sending request between different domains  */}
 app.use(cors());
+
+             {/**this line is to use cookieParser  */}
+app.use(cookieParser());
 
             {/** Creation of the route API for testing the back end*/}
         
