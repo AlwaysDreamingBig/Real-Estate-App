@@ -87,16 +87,18 @@ export default function UserProfile() {
                 type="text" 
                 placeholder='username'
                 id='username'
+                defaultValue={currentUser.username}
                 className='border p-3 rounded-lg'/>
             
             <input 
                 type="text" 
                 placeholder='email'
+                defaultValue={currentUser.email}
                 id='email'
                 className='border p-3 rounded-lg'/>
             
             <input 
-                type="text" 
+                type="password" 
                 placeholder='password'
                 id='password'
                 className='border p-3 rounded-lg'/>
