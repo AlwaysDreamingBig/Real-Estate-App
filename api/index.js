@@ -20,11 +20,17 @@ mongoose.connect(process.env.MONGO)
 
 const app = express();
 
+const corsOptions = {
+    origin: true, //included origin as true
+    credentials: true, //included credentials as true
+};
+
+app.use(cors(corsOptions));
+
             {/**this line is to enable the sending of JSON to the backend (firstly for authentification) */}
 app.use(express.json());
 
              {/**this line is to enable sending request between different domains  */}
-app.use(cors());
 
              {/**this line is to use cookieParser  */}
 app.use(cookieParser());
