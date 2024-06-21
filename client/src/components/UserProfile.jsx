@@ -17,6 +17,7 @@ export default function UserProfile() {
     const [fileUploadError, setFileUploadError] =useState(null);
     const [formData, setFormData] = useState({});
     const [updateSuccess, setupdateUserSuccess] = useState(null);
+    const [disableUpdate, setDisableUpdate] = useState(true);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -24,6 +25,7 @@ export default function UserProfile() {
     console.log(filePerc);
     console.log(fileUploadError);
     console.log(formData);
+    console.log(disableUpdate);
 
     useEffect(() => {
         if (file) {
@@ -95,12 +97,16 @@ export default function UserProfile() {
     
           //If everything is alright navigate to the Sign(in page
           navigate('/profile');
+          setDisableUpdate(true);
     
         } catch (error) {
           dispatch(updateUserFailure(error.message))
         }
     };
-  
+    
+    const setUpdatable = () => {
+        setDisableUpdate(false);
+    }
 
     return (
     <div className='p-3 max-w-lg mx-auto'>
@@ -146,6 +152,7 @@ export default function UserProfile() {
                 id='username'
                 onChange={handleChange}
                 defaultValue={currentUser.username}
+                disabled={disableUpdate}
                 className='border p-3 rounded-lg'/>
             
             <input 
@@ -153,6 +160,7 @@ export default function UserProfile() {
                 placeholder='email'
                 onChange={handleChange}
                 defaultValue={currentUser.email}
+                disabled={disableUpdate}
                 id='email'
                 className='border p-3 rounded-lg'/>
             
@@ -160,16 +168,26 @@ export default function UserProfile() {
                 type="password" 
                 placeholder='password'
                 id='password'
+                disabled={disableUpdate}
                 className='border p-3 rounded-lg'/>
-
+                
             <button 
                 disabled={loading}
                 type="submit"
-                className='bg-slate-700 text-white rounded-lg p-3 hover:opacity-75 disabled:opacity-60'
+                className={`bg-green-500 text-white rounded-lg p-3 hover:opacity-75 disabled:opacity-60 ${disableUpdate ? 'hidden' : ''} `}
             >
                 {loading ? 'Loading...' : 'Update'}
             </button>
         </form>
+
+        <button 
+                disabled={loading}
+                type="submit"
+                onClick={setUpdatable}
+                className={`w-full mt-5 bg-slate-700 text-white rounded-lg p-3 hover:opacity-75 disabled:opacity-60 ${disableUpdate ? '' : 'hidden'} `}
+            >
+                Modify
+        </button>
 
         <div className='flex justify-between mt-5'>
             <span className='text-red-600 cursor-pointer font-semibold'>Delete Account</span>
