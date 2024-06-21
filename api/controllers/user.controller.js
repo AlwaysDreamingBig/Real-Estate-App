@@ -1,37 +1,54 @@
 import User from "../models/user.model.js";
 import { errorHandler } from "../utils/error.js";
-import bcryptjs from 'bcryptjs'
+import bcryptjs from 'bcryptjs';
+import { verifyPassword } from "../utils/utility.js"; 
 
 export const userTest = (req, res) => {
-    res.json({ message: 'API is working'});
+    res.json({ message: 'API is working' });
 };
 
 // req.user.id is the id received after the verifyToken was correct
-// req.params.id is the one specified in the route router.post('/update/:id', verifyToken,updateUser);
+// req.params.id is the one specified in the route router.post('/update/:id', verifyToken, updateUser);
 
 export const updateUser = async (req, res, next) => {
-    if (req.user.id !== req.params.id) return next(errorHandler(406, 'You can only update your account!'))
-    
-        try {
-            if(req.body.password){
-                req.body.password = bcryptjs.hashSync(req.body.password, 10);
-            }
+    if (req.user.id !== req.params.id) {
+        return next(errorHandler(406, 'You can only update your account!'));
+    }
 
-            const updatedUser = await User.findByIdAndUpdate(req.params.id, {
-                $set:{
-                    username: req.body.username,
-                    email: req.body.email,
-                    password: req.body.password,
-                    avatar: req.body.avatar,
-                    bio: req.body.bio,
-                }
-            }, {new: true});
+    const { username, email, password, avatar, bio } = req.body;
 
-            const {password, ...rest} = updatedUser._doc;
+    // Input validation
+    if (username === '') {
+        return next(errorHandler(410, 'Username cannot be empty!'));
+    }
+    if (email === '') {
+        return next(errorHandler(410, 'Email cannot be empty!'));
+    }
+    if (password && !verifyPassword(password)) {
+        return next(errorHandler(410, 'Password does not meet the requirements!'));
+    }
 
-            res.status(200).json(rest);
+    try {
+        const updateData = {};
 
-        } catch (error) {
-           next(error); 
+        if (username) updateData.username = username;
+        if (email) updateData.email = email;
+        if (password) updateData.password = bcryptjs.hashSync(password, 10);
+        if (avatar) updateData.avatar = avatar;
+        if (bio) updateData.bio = bio;
+
+        const updatedUser = await User.findByIdAndUpdate(req.params.id, {
+            $set: updateData
+        }, { new: true });
+
+        if (!updatedUser) {
+            return next(errorHandler(404, 'User not found'));
         }
+
+        const { password: pwd, ...rest } = updatedUser._doc;
+        res.status(200).json(rest);
+
+    } catch (error) {
+        next(error);
+    }
 };

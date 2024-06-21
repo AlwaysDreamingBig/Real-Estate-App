@@ -111,8 +111,8 @@ export default function UserProfile() {
     return (
     <div className='p-3 max-w-lg mx-auto'>
         <h1 className='text-3xl font-bold text-center my-7'> User Profile</h1>
-        {error && <p className="text-red-600 text-center">{error}</p>}
-        {updateSuccess && <p className="text-green-600 text-center">Update details Successfully!</p>}
+        {error && <p className="text-red-600 text-center mb-3">{extractErrorMessage(error)}</p>}
+        {updateSuccess && <p className="text-green-600 text-center mb-3">Update details Successfully!</p>}
 
         <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
             <input 
@@ -167,6 +167,7 @@ export default function UserProfile() {
             <input 
                 type="password" 
                 placeholder='password'
+                onChange={handleChange}
                 id='password'
                 disabled={disableUpdate}
                 className='border p-3 rounded-lg'/>
