@@ -3,15 +3,22 @@ import { useSelector } from 'react-redux'
 import { useRef, useEffect } from 'react'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 import {app} from '../firebase.js'
+import { useDispatch } from 'react-redux';
+import { updateUserStart, updateUserSuccess, updateUserFailure } from '../redux/user/userSlice';
+import { useNavigate } from 'react-router-dom';
+import { extractErrorMessage } from '../../../api/utils/error.js'
 
 export default function UserProfile() {
 
     const fileRef = useRef(null);
-    const {currentUser} = useSelector((state) => state.user)
+    const {currentUser, loading, error} = useSelector((state) => state.user)
     const [file, setFile] = useState(undefined);
     const [filePerc, setFilePerc] = useState(0);
     const [fileUploadError, setFileUploadError] =useState(null);
     const [formData, setFormData] = useState({});
+    const [updateSuccess, setupdateUserSuccess] = useState(null);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
 
     console.log(filePerc);
@@ -45,13 +52,63 @@ export default function UserProfile() {
                 })
             }
         ); 
-    }
+    };
  
+    const handleChange = (e) => {
+        setFormData({
+          ...formData,
+          [e.target.id]: e.target.value,
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+    
+        dispatch(updateUserStart());
+    
+        try {
+          const res = await fetch(`http://localhost:3000/api/user/update/${currentUser._id}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify(formData),
+          });
+    
+          // Check if the response is ok
+          if (!res.ok) {
+            const errorText = await res.text();
+            throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
+          }
+    
+           // Try to parse the JSON
+          const data = await res.json();
+    
+          if(data.success === false){
+            dispatch(updateUserFailure(data.message));
+            return;
+          }
+    
+          dispatch(updateUserSuccess(data));
+          setupdateUserSuccess(true);
+    
+          //If everything is alright navigate to the Sign(in page
+          navigate('/profile');
+    
+        } catch (error) {
+          dispatch(updateUserFailure(error.message))
+        }
+    };
+  
+
     return (
     <div className='p-3 max-w-lg mx-auto'>
         <h1 className='text-3xl font-bold text-center my-7'> User Profile</h1>
+        {error && <p className="text-red-600 text-center">{error}</p>}
+        {updateSuccess && <p className="text-green-600 text-center">Update details Successfully!</p>}
 
-        <form className='flex flex-col gap-4'>
+        <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
             <input 
                 onChange={(e) => setFile(e.target.files[0])}
                 type="file" 
@@ -87,12 +144,14 @@ export default function UserProfile() {
                 type="text" 
                 placeholder='username'
                 id='username'
+                onChange={handleChange}
                 defaultValue={currentUser.username}
                 className='border p-3 rounded-lg'/>
             
             <input 
                 type="text" 
                 placeholder='email'
+                onChange={handleChange}
                 defaultValue={currentUser.email}
                 id='email'
                 className='border p-3 rounded-lg'/>
@@ -102,9 +161,13 @@ export default function UserProfile() {
                 placeholder='password'
                 id='password'
                 className='border p-3 rounded-lg'/>
-                
-            <button className='bg-slate-700 text-white rounded-lg p-3 hover:opacity-75 disabled:opacity-60'>
-                Update
+
+            <button 
+                disabled={loading}
+                type="submit"
+                className='bg-slate-700 text-white rounded-lg p-3 hover:opacity-75 disabled:opacity-60'
+            >
+                {loading ? 'Loading...' : 'Update'}
             </button>
         </form>
 
