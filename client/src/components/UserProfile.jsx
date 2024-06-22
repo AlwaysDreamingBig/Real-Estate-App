@@ -4,7 +4,7 @@ import { useRef, useEffect } from 'react'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 import {app} from '../firebase.js'
 import { useDispatch } from 'react-redux';
-import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess } from '../redux/user/userSlice';
+import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserFailure, signOutUserStart, signOutUserSuccess } from '../redux/user/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { extractErrorMessage } from '../../../api/utils/error.js'
 
@@ -143,6 +143,38 @@ export default function UserProfile() {
         }
     };
 
+    const handleSignOutUser = async () => {
+
+        dispatch(signOutUserStart());
+
+        try {
+
+            const res = await fetch('http://localhost:3000/api/auth/signout');
+        
+              // Check if the response is ok
+              if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
+              }
+        
+               // Try to parse the JSON
+              const data = await res.json();
+        
+              if(data.success === false){
+                dispatch(signOutUserFailure(data.message));
+                return;
+              }
+        
+              dispatch(signOutUserSuccess(data));
+        
+              //If everything is alright navigate to the Sign(in page
+             // navigate('/signin');
+
+        } catch (error) {
+            dispatch(signOutUserFailure(error.message));
+        }
+    };
+
     return (
     <div className='p-3 max-w-lg mx-auto'>
         <h1 className='text-3xl font-bold text-center my-7'> User Profile</h1>
@@ -229,7 +261,9 @@ export default function UserProfile() {
             <span 
                 onClick={handleDeleteUser}
                 className='text-red-600 cursor-pointer font-semibold'>Delete Account</span>
-            <span className='text-blue-950 cursor-pointer font-semibold'>Sign Out</span>
+            <span 
+                onClick={handleSignOutUser}
+                className='text-blue-950 cursor-pointer font-semibold'>Sign Out</span>
         </div>
     </div>
   )
