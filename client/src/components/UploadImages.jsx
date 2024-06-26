@@ -5,18 +5,17 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/
 import { app } from '../firebase';
 import { useSelector } from 'react-redux';
 
-export default function UploadImages({ className }) {
-  const [selectedImages, setSelectedImages] = useState([]); // State to hold selected images
-  const [uploadedImages, setUploadedImages] = useState([]); // State to hold URLs of uploaded images
-  const [uploadProgress, setUploadProgress] = useState({}); // State to track upload progress
-  const [uploading, setUploading] = useState(false); // State to indicate if upload is in progress
-  const [uploadedCount, setUploadedCount] = useState(0); // Counter for uploaded images
-  const [error, setError] = useState(null); // State for error handling
-  const { currentUser } = useSelector((state) => state.user); // Example of how to access currentUser
+export default function UploadImages({ className, onImagesUpload, removeImageFromFormData }) {
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [uploadedImages, setUploadedImages] = useState([]);
+  const [uploadProgress, setUploadProgress] = useState({});
+  const [uploading, setUploading] = useState(false);
+  const [uploadedCount, setUploadedCount] = useState(0);
+  const [error, setError] = useState(null);
+  const { currentUser } = useSelector((state) => state.user);
 
-  const maxUploadLimit = 6; // Maximum number of images that can be uploaded
+  const maxUploadLimit = 6;
 
-  // Function to handle file selection
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     const totalFiles = files.length + selectedImages.length;
@@ -27,28 +26,25 @@ export default function UploadImages({ className }) {
     }
   };
 
-  // Function to remove selected image from preview
   const removeSelectedImage = (index) => {
     const updatedImages = [...selectedImages];
     updatedImages.splice(index, 1);
     setSelectedImages(updatedImages);
   };
 
-  // Function to handle image upload
-  const handleUpload = () => {
-    // Check if number of selected images is less than or equal to remaining uploads
+  const handleUpload = async () => {
     if (selectedImages.length > maxUploadLimit - uploadedCount) {
       alert(`You can only upload ${maxUploadLimit - uploadedCount} more images.`);
       return;
     }
 
     setUploading(true);
-    setError(null); // Clear any previous errors
+    setError(null);
 
     const storage = getStorage(app);
     const uploadPromises = selectedImages.map((image) => {
       return new Promise((resolve, reject) => {
-        const fileDirectory = currentUser._id; // Example: use currentUser._id as directory
+        const fileDirectory = currentUser._id;
         const fileName = new Date().getTime() + image.name;
         const storageRef = ref(storage, `Listing images/${fileDirectory}/${fileName}`);
         const uploadTask = uploadBytesResumable(storageRef, image);
@@ -83,23 +79,31 @@ export default function UploadImages({ className }) {
       });
     });
 
-    Promise.all(uploadPromises)
-      .then(() => {
-        setSelectedImages([]); // Clear selected images after successful upload
-        setUploading(false);
-      })
-      .catch((error) => {
-        console.error('Error uploading images:', error);
-        setError('Error uploading images. Please try again.');
-        setUploading(false);
-      });
+    try {
+      const urls = await Promise.all(uploadPromises);
+      if (onImagesUpload) {
+        onImagesUpload(urls); // Pass uploaded image URLs to parent component
+      }
+      setSelectedImages([]);
+      setUploading(false);
+    } catch (error) {
+      console.error('Error uploading images:', error);
+      setError('Error uploading images. Please try again.');
+      setUploading(false);
+    }
   };
 
-  // Disable file input when 6 images are selected
+  const handleRemoveUploadedImage = (url) => {
+    setUploadedImages((prevImages) => prevImages.filter((imageUrl) => imageUrl !== url));
+    setUploadedCount((prevCount) => prevCount - 1);
+    if (removeImageFromFormData) {
+      removeImageFromFormData(url); // Call function passed from parent component
+    }
+  };
+
   const canUploadMoreImages = uploadedCount < maxUploadLimit;
 
   useEffect(() => {
-    // Disable file input when 6 images are selected
     const fileInput = document.getElementById('images');
     if (fileInput) {
       fileInput.disabled = !canUploadMoreImages;
@@ -111,7 +115,6 @@ export default function UploadImages({ className }) {
       <h2 className='font-semibold text-lg mb-3'>Upload Images</h2>
 
       <div className='flex flex-col mb-3'>
-        {/* Display selected images */}
         <div className='flex flex-wrap justify-center items-center mb-7 bg-gray-200 p-2 rounded-lg'>
           {selectedImages.length > 0 ? (
             selectedImages.map((image, index) => (
@@ -139,23 +142,28 @@ export default function UploadImages({ className }) {
           )}
         </div>
 
-        {/* Display uploaded images */}
         <div className='flex flex-wrap justify-center items-center mb-7 bg-gray-200 p-2 rounded-lg'>
           {uploadedImages.length > 0 ? (
             uploadedImages.map((url, index) => (
-              <img
-                key={index}
-                src={url}
-                alt="Uploaded"
-                className='h-24 w-24 object-cover m-2 rounded-lg'
-              />
+              <div key={index} className='relative m-2'>
+                <img
+                  src={url}
+                  alt="Uploaded"
+                  className='h-24 w-24 object-cover rounded-lg'
+                />
+                <button
+                  className='absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 hover:bg-red-600'
+                  onClick={() => handleRemoveUploadedImage(url)}
+                >
+                  <FontAwesomeIcon icon={faTimes} />
+                </button>
+              </div>
             ))
           ) : (
             <span className='text-gray-600'>No Images Uploaded Yet</span>
           )}
         </div>
 
-        {/* Error message */}
         {error && <p className='text-red-500 text-sm mb-4'>{error}</p>}
 
         <p className='font-semibold mb-4 self-center'>
@@ -165,7 +173,6 @@ export default function UploadImages({ className }) {
           </span>
         </p>
 
-        {/* Button to select images */}
         <div className='flex items-center self-center'>
           <input
             type="file"
@@ -184,7 +191,6 @@ export default function UploadImages({ className }) {
           </label>
         </div>
 
-        {/* Button to upload images */}
         <div className='flex items-center self-center mt-4'>
           <button
             onClick={handleUpload}

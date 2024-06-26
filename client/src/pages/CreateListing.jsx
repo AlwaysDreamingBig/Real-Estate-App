@@ -1,9 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faDollarSign, faMapMarkerAlt, faBed, faBath, faCouch, faBuilding, faUser, faImage, faTags } from '@fortawesome/free-solid-svg-icons';
 import UploadImages from '../components/UploadImages';
 
 export default function CreateListing() {
+
+  const [formData, setFormData] = useState({
+    imageUrls: [],
+  });
+
+  // Function to handle updating formData with uploaded image URLs
+  const handleImagesUpload = (urls) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      imageUrls: [...prevFormData.imageUrls, ...urls],
+    }));
+  };
+
+  // Function to handle removing an image URL from formData
+  const removeImage = (url) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      imageUrls: prevFormData.imageUrls.filter((imageUrl) => imageUrl !== url),
+    }));
+  };
+
+  console.log(formData);
+
+
   return (
     <main className='bg-white min-h-screen p-8'>
 
@@ -134,7 +158,7 @@ export default function CreateListing() {
 
                           {/** Upload images */}
 
-        <UploadImages />
+        <UploadImages onImagesUpload={handleImagesUpload} removeImageFromFormData={removeImage} />
       </div>
 
 
