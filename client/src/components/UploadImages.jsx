@@ -11,6 +11,7 @@ export default function UploadImages({ className }) {
   const [uploadProgress, setUploadProgress] = useState({}); // State to track upload progress
   const [uploading, setUploading] = useState(false); // State to indicate if upload is in progress
   const [uploadedCount, setUploadedCount] = useState(0); // Counter for uploaded images
+  const [error, setError] = useState(null); // State for error handling
   const { currentUser } = useSelector((state) => state.user); // Example of how to access currentUser
 
   const maxUploadLimit = 6; // Maximum number of images that can be uploaded
@@ -42,6 +43,7 @@ export default function UploadImages({ className }) {
     }
 
     setUploading(true);
+    setError(null); // Clear any previous errors
 
     const storage = getStorage(app);
     const uploadPromises = selectedImages.map((image) => {
@@ -61,14 +63,21 @@ export default function UploadImages({ className }) {
             }));
           },
           (error) => {
-            console.error(error);
+            console.error('Error uploading image:', error);
+            setError('Error uploading image. Please try again.');
             reject(error);
           },
           async () => {
-            const url = await getDownloadURL(uploadTask.snapshot.ref);
-            setUploadedImages((prevImages) => [...prevImages, url]);
-            setUploadedCount((prevCount) => prevCount + 1);
-            resolve(url);
+            try {
+              const url = await getDownloadURL(uploadTask.snapshot.ref);
+              setUploadedImages((prevImages) => [...prevImages, url]);
+              setUploadedCount((prevCount) => prevCount + 1);
+              resolve(url);
+            } catch (error) {
+              console.error('Error getting download URL:', error);
+              setError('Error getting download URL. Please try again.');
+              reject(error);
+            }
           }
         );
       });
@@ -80,7 +89,8 @@ export default function UploadImages({ className }) {
         setUploading(false);
       })
       .catch((error) => {
-        console.error('Error uploading images: ', error);
+        console.error('Error uploading images:', error);
+        setError('Error uploading images. Please try again.');
         setUploading(false);
       });
   };
@@ -144,6 +154,9 @@ export default function UploadImages({ className }) {
             <span className='text-gray-600'>No Images Uploaded Yet</span>
           )}
         </div>
+
+        {/* Error message */}
+        {error && <p className='text-red-500 text-sm mb-4'>{error}</p>}
 
         <p className='font-semibold mb-4 self-center'>
           PS:
