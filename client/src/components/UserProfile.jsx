@@ -179,7 +179,7 @@ export default function UserProfile() {
     <div className='p-3 max-w-lg mx-auto'>
         <h1 className='text-3xl font-bold text-center my-7'> User Profile</h1>
         {error && <p className="text-red-600 text-center mb-3">{extractErrorMessage(error)}</p>}
-        {updateSuccess && <p className="text-green-600 text-center mb-3">Update details Successfully!</p>}
+        {updateSuccess && <p className="text-green-700 text-center mb-3">Update details Successfully!</p>}
 
         <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
             <input 
