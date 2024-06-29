@@ -55,6 +55,10 @@ const listingSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    userName:{
+        type: String,
+        required: true,
+    },
     houseShare:{
         type: Boolean,
         required: true,

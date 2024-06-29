@@ -29,7 +29,8 @@ export default function CreateListing() {
     type: 'rent',
     offer: false,
     imageUrls: [],
-    userRef: currentUser.username,
+    userRef: currentUser._id,
+    userName: currentUser.username,
     houseShare: false,
     houseShareBedrooms: 0,
   });
@@ -278,17 +279,18 @@ export default function CreateListing() {
           <option value='colocation'>Colocation</option>
         </select>
 
-        <label htmlFor='userRef' className='mb-1'>
+        <label htmlFor='userName' className='mb-1'>
           <FontAwesomeIcon icon={faUser} className='mr-2 text-gray-500' />
-          User Reference*
+          Username*
         </label>
         <input
           type="text"
-          id='userRef'
+          id='userName'
           onChange={handleChange}
           value={currentUser.username}
+          disabled
           className='border border-gray-400 bg-gray-100 p-2 rounded-lg mb-3'
-          placeholder='Enter user reference'
+          placeholder='Enter username'
         />
 
         <label htmlFor='houseShareBedrooms' className='mb-1'>
