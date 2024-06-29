@@ -1,10 +1,6 @@
 import React from 'react';
-import { img1 } from '../assets';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit, faEye } from '@fortawesome/free-solid-svg-icons';
-
-//const imgUrl = img1;
-//const listingName = "Magnifique maison dans la prairie";
 
 export default function ListingCard({imgUrl, listingName}) {
   return (
