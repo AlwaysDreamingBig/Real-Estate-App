@@ -6,29 +6,31 @@ export const createListing = async (req, res, next) => {
   try {
     // Check if name, address, description, or imageUrls are empty
     if (!name) {
-      return res.status(411).json({ message: "Name is required." });
+      return res.status(400).json({ message: "Name is required." });
     }
     if (!address) {
-      return res.status(411).json({ message: "Address is required." });
+      return res.status(400).json({ message: "Address is required." });
     }
     if (!description) {
-      return res.status(411).json({ message: "Description is required." });
+      return res.status(400).json({ message: "Description is required." });
     }
     if (!imageUrls || imageUrls.length === 0) {
-      return res.status(411).json({ message: "Images are required." });
+      return res.status(400).json({ message: "Images are required." });
     }
+
+    // Convert prices to numbers if they are strings
+    const regularPriceNum = Number(regularPrice);
+    const discountPriceNum = Number(discountPrice);
+
     // Check if regularPrice or discountPrice are missing or invalid
-    if (!regularPrice || isNaN(regularPrice) || regularPrice <= 0) {
-        return res.status(411).json({ message: "Regular price must be a positive number." });
+    if (isNaN(regularPriceNum) || regularPriceNum <= 0) {
+      return res.status(400).json({ message: "Regular price must be a positive number." });
     }
-      if (!discountPrice || isNaN(discountPrice) || discountPrice <= 0) {
-        return res.status(411).json({ message: "Discount price must be a positive number." });
+    if (isNaN(discountPriceNum) || discountPriceNum <= 0) {
+      return res.status(400).json({ message: "Discount price must be a positive number." });
     }
-      if (discountPrice >= regularPrice) {
-        return res.status(411).json({ message: "Discount price must be less than regular price." });
-    }
-    if (discountPrice >= regularPrice) {
-        return res.status(411).json({ message: "Discount price must be less than regular price." });
+    if (discountPriceNum >= regularPriceNum) {
+      return res.status(400).json({ message: "Discount price must be less than regular price." });
     }
 
     // Continue with listing creation if all required fields are provided
