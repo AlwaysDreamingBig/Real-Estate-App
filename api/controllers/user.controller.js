@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import { errorHandler } from "../utils/error.js";
 import bcryptjs from 'bcryptjs';
 import { verifyPassword } from "../utils/utility.js"; 
+import Listing from "../models/listing.model.js";
 
 export const userTest = (req, res) => {
     res.json({ message: 'API is working' });
@@ -65,6 +66,21 @@ export const deleteUser = async (req, res, next) => {
         res.clearCookie('access_token');
         res.status(200).json('Account deleted successfully!');
     } catch (error) {
+        next(error);
+    }
+};
+
+export const getUserListing = async (req, res, next) => {
+
+    if (req.user.id !== req.params.id) {
+        return next(errorHandler(406, 'Your session has expired, please re-signin!'));
+    }
+
+    try {
         
+        const listings = await Listing.find({userRef: req.params.id});
+        res.status(200).json(listings);
+    } catch (error) {
+        next(error);
     }
 };
