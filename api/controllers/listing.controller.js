@@ -53,7 +53,7 @@ export const deleteListing = async (req, res, next) => {
     }
 
     if(req.user.id !== listing.userRef){
-      return next(errorHandler(404, 'You can only delete your own listing'))
+      return next(errorHandler(406, 'You can only delete your own listing'))
     }
 
     try {
@@ -65,4 +65,32 @@ export const deleteListing = async (req, res, next) => {
     } catch (error) {
         next(error)
     }
+};
+
+export const updateListing = async (req, res, next) => {
+
+  // Ensure the listing belongs to the user making the request
+  const listing = await Listing.findById(req.params.id);
+
+  if(!listing){
+    return next(errorHandler(404, 'Listing was not found!'))
+  }
+
+  if(req.user.id !== listing.userRef){
+    return next(errorHandler(406, 'You can only update your own listing'))
+  }
+
+  try {
+
+    const updatedListing = await Listing.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {new: true}
+    );
+
+    return res.status(200).json(updatedListing);
+ 
+  } catch (error) {
+      next(error)
+  }
 };
