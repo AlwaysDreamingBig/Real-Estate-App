@@ -1,6 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit, faEye } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 const ListingCard = ({ imgUrl, listingName, listingID, onDelete }) => {
   const handleDelete = async () => {
@@ -25,19 +26,21 @@ const ListingCard = ({ imgUrl, listingName, listingID, onDelete }) => {
         </label>
       </div>
 
-      <div className='flex space-x-4'>
+      <div className='flex items-center space-x-4'>
         <FontAwesomeIcon 
           icon={faTrash} 
-          className='text-red-600 cursor-pointer' 
+          className='text-red-600 cursor-pointer mr-3' 
           aria-label="Delete listing"
           onClick={handleDelete} // Call handleDelete when delete icon is clicked
         />
 
-        <FontAwesomeIcon 
-          icon={faEdit} 
-          className='text-blue-600 cursor-pointer' 
-          aria-label="Edit listing"
-        />
+        <Link to={`/update-listing/${listingID}`}>
+          <FontAwesomeIcon 
+            icon={faEdit} 
+            className='text-blue-600 cursor-pointer mr-2' 
+            aria-label="Edit listing"
+          />
+        </Link> 
 
         <FontAwesomeIcon 
           icon={faEye} 
