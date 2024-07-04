@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faDollarSign, faMapMarkerAlt, faBed, faBath, faCouch, faBuilding, faUser, faImage, faTags } from '@fortawesome/free-solid-svg-icons';
-import UploadImages from '../components/UploadImages';
+import UploadImages from '../components/UploadImages_Update';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';

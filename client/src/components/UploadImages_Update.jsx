@@ -5,7 +5,7 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/
 import { app } from '../firebase';
 import { useSelector } from 'react-redux';
 
-export default function UploadImages({ className, onImagesUpload, removeImageFromFormData }) {
+export default function UploadImages({ className, onImagesUpload, removeImageFromFormData, initialImages = [] }) {
   const [selectedImages, setSelectedImages] = useState([]);
   const [uploadedImages, setUploadedImages] = useState([]);
   const [uploadProgress, setUploadProgress] = useState({});
@@ -16,13 +16,19 @@ export default function UploadImages({ className, onImagesUpload, removeImageFro
 
   const maxUploadLimit = 6;
 
+  useEffect(() => {
+    // Initialize with initialImages
+    setUploadedImages(initialImages);
+    setUploadedCount(initialImages.length);
+  }, [initialImages]);
+
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    const totalFiles = files.length + selectedImages.length;
+    const totalFiles = files.length + selectedImages.length + uploadedImages.length;
     if (totalFiles > maxUploadLimit) {
       alert(`You can only select up to ${maxUploadLimit} images.`);
     } else {
-      setSelectedImages([...selectedImages, ...files.slice(0, maxUploadLimit - selectedImages.length)]);
+      setSelectedImages([...selectedImages, ...files.slice(0, maxUploadLimit - selectedImages.length - uploadedImages.length)]);
     }
   };
 
