@@ -16,7 +16,11 @@ export const updateUser = async (req, res, next) => {
         return next(errorHandler(406, 'You can only update your account!'));
     }
 
-    const { username, email, password, avatar, bio } = req.body;
+    const {
+        username, email, password, avatar, bio, age, city, state, country,
+        postCode, phoneNumber, agency, agencyLicence, taxNumber, serviceArea,
+        totalListing, propertiesSold, propertiesRent
+    } = req.body;
 
     // Input validation
     if (username === '') {
@@ -37,6 +41,19 @@ export const updateUser = async (req, res, next) => {
         if (password) updateData.password = bcryptjs.hashSync(password, 10);
         if (avatar) updateData.avatar = avatar;
         if (bio) updateData.bio = bio;
+        if (age) updateData.age = age;
+        if (city) updateData.city = city;
+        if (state) updateData.state = state;
+        if (country) updateData.country = country;
+        if (postCode) updateData.postCode = postCode;
+        if (phoneNumber) updateData.phoneNumber = phoneNumber;
+        if (agency) updateData.agency = agency;
+        if (agencyLicence) updateData.agencyLicence = agencyLicence;
+        if (taxNumber) updateData.taxNumber = taxNumber;
+        if (serviceArea) updateData.serviceArea = serviceArea;
+        if (totalListing) updateData.totalListing = totalListing;
+        if (propertiesSold) updateData.propertiesSold = propertiesSold;
+        if (propertiesRent) updateData.propertiesRent = propertiesRent;
 
         const updatedUser = await User.findByIdAndUpdate(req.params.id, {
             $set: updateData

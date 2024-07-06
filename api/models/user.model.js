@@ -25,6 +25,58 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
+    age: {
+        type: Number,
+        default: null,
+    },
+    city: {
+        type: String,
+        default: "",
+    },
+    state: {
+        type: String,
+        default: "",
+    },
+    country: {
+        type: String,
+        default: "",
+    },
+    postCode: {
+        type: Number,
+        default: null,
+    },
+    phoneNumber: {
+        type: Number,
+        default: null,
+    },
+    agency: {
+        type: String,
+        default: "",
+    },
+    agencyLicence: {
+        type: String,
+        default: "",
+    },
+    taxNumber: {
+        type: String,
+        default: "",
+    },
+    serviceArea: {
+        type: String,
+        default: "",
+    },
+    totalListing: {
+        type: Number,
+        default: 0,
+    },
+    propertiesSold: {
+        type: Number,
+        default: 0,
+    },
+    propertiesRent: {
+        type: Number,
+        default: 0,
+    },
 }, {timestamps: true});
 
 const User = mongoose.model('User', userSchema);
