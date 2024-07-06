@@ -55,7 +55,7 @@ const ProfilePictureAndInfo = () => {
             <div className="font-semibold">State:</div><div>{currentUser.state}</div>
             <div className="font-semibold">Country:</div><div>{currentUser.country}</div>
             <div className="font-semibold">Post Code:</div><div>{currentUser.postCode}</div>
-            <div className="font-semibold">My Phone:</div><div>{currentUser.agencyPhone}</div>
+            <div className="font-semibold">My Phone:</div><div>{currentUser.phoneNumber}</div>
             <div className="font-semibold">My Email:</div><div>{currentUser.email}</div>
           </div>
         </div>
