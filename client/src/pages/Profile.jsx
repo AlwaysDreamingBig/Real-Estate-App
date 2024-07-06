@@ -64,14 +64,16 @@ export default function Profile() {
           Settings
         </button>
 
-        <button
-          className='ml-4 bg-purple-500 rounded-lg px-5 py-3 text-white hover:opacity-70'
-          onClick={handleShowUserProfile}
-        >
-          <FontAwesomeIcon icon={faEdit} className="mr-2" />
-          Edit Profile
-        </button>
-
+        <Link
+          to={`/update-profile/${currentUser._id}`}>
+          <button
+            className='ml-4 bg-purple-500 rounded-lg px-5 py-3 text-white hover:opacity-70'
+          >
+            <FontAwesomeIcon icon={faEdit} className="mr-2" />
+            Edit Profile
+          </button>
+        </Link>
+       
         <button
           className='ml-4 bg-red-500 rounded-lg px-5 py-3 text-white hover:opacity-70'
           onClick={handleShowUserMessages}
