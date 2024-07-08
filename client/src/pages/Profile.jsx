@@ -7,27 +7,29 @@ import ProfilePictureAndInfo from '../components/ProfilePictureAndInfo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faEdit, faPlus, faList, faEnvelope, faL } from '@fortawesome/free-solid-svg-icons';
 import Content4 from '../components/MessagesContainer';
+import Settings from '../components/Settings';
 
 export default function Profile() {
   const { currentUser } = useSelector((state) => state.user);
   const [showListings, setShowListings] = useState(false);
-  const [showUserProfile, setShowUserProfile] = useState(false);
   const [showUserMessages, setShowUserMessages] = useState(true);
+  const [showUserSettings, setShowUserSettings] = useState(false);
+
 
   const handleShowListings = () => {
     setShowListings(true);
-    setShowUserProfile(false);
+    setShowUserSettings(false);
     setShowUserMessages(false);
   };
 
-  const handleShowUserProfile = () => {
-    setShowUserProfile(true);
+  const handleShowSettings = () => {
+    setShowUserSettings(true);
     setShowListings(false);
     setShowUserMessages(false);
   };
 
   const handleShowUserMessages = () => {
-    setShowUserProfile(false);
+    setShowUserSettings(false);
     setShowListings(false);
     setShowUserMessages(true);
   };
@@ -59,6 +61,7 @@ export default function Profile() {
 
         <button
           className='ml-4 bg-gray-500 rounded-lg px-5 py-3 text-white hover:opacity-70'
+          onClick={handleShowSettings}
         >
           <FontAwesomeIcon icon={faCog} className="mr-2" />
           Settings
@@ -68,6 +71,7 @@ export default function Profile() {
           to={`/update-profile/${currentUser._id}`}>
           <button
             className='ml-4 bg-purple-500 rounded-lg px-5 py-3 text-white hover:opacity-70'
+            onClick={handleShowSettings}
           >
             <FontAwesomeIcon icon={faEdit} className="mr-2" />
             Edit Profile
@@ -94,14 +98,12 @@ export default function Profile() {
           </section>
         )}
 
-        {showUserProfile && (
-          <section className='mt-4 flex-1'>
-            <UserProfile />
-          </section>
-        )}
-
         {showUserMessages && (
           <Content4 className=''/>
+        )}
+
+        {showUserSettings && (
+          <Settings/>
         )}
 
       </div>
