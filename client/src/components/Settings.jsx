@@ -12,7 +12,7 @@ import {
   faShareAlt, 
   faSave 
 } from '@fortawesome/free-solid-svg-icons';
-import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserFailure, signOutUserStart, signOutUserSuccess } from '../redux/user/userSlice.js';
+import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserFailure, signOutUserStart, signOutUserSuccess } from '../redux/user/userSlice.js';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -137,6 +137,48 @@ const Settings = () => {
         break;
       default:
         break;
+    }
+  };
+
+  const handleSaveSettings = async () => {
+
+    dispatch(updateUserStart());
+
+    try {
+      const res = await fetch(`http://localhost:3000/api/user/update/${currentUser._id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          emailNotifications,
+          messageNotifications,
+          publicProfile,
+          dataSharing,
+          language,
+          currency,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        dispatch(updateUserFailure(data));
+        throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
+      }
+
+      const data = await res.json();
+
+      if (data.success === false) {
+        // Handle error
+      } else {
+        console.log("Settings saved");
+        dispatch(updateUserSuccess(data));
+        navigate('/');
+      }
+
+    } catch (error) {
+      // Handle error
     }
   };
 
@@ -330,7 +372,10 @@ const Settings = () => {
 
       {/* Save Button */}
       <div className="text-center">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none">
+        <button 
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none"
+          onClick={handleSaveSettings}
+        >
           <FontAwesomeIcon icon={faSave} className="mr-2" />
           Save Settings
         </button>
