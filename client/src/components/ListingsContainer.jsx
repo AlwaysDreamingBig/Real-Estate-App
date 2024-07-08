@@ -66,25 +66,28 @@ const ListingsContainer = ({ currentUser }) => {
   }
 
   return (
-    <div className="flex flex-col space-y-4 font-semibold text-xl">
+    <div className="flex flex-col space-y-4 font-semibold text-xl max-h-screen overflow-y-auto">
       <label htmlFor="Listings">My Listings</label>
-      {displayedListings.length === 0 ? (
-        <p>No listings found.</p>
-      ) : (
-        displayedListings.map((listing) => (
-          <ListingCard
-            key={listing._id}
-            imgUrl={listing.imageUrls[0]}
-            listingName={listing.name}
-            listingID={listing._id}
-            listingAddress={listing.address}
-            listingBaths={listing.bathrooms}
-            listingBeds={listing.bedrooms}
-            listingPrice={listing.regularPrice}
-            onDelete={onDelete} // Pass onDelete function to ListingCard
-          />
-        ))
-      )}
+      <div>
+        {displayedListings.length === 0 ? (
+          <p>No listings found.</p>
+        ) : (
+          displayedListings.map((listing) => (
+            <div key={listing._id} className="mb-4"> {/* Add margin-bottom to create space */}
+              <ListingCard
+                imgUrl={listing.imageUrls[0]}
+                listingName={listing.name}
+                listingID={listing._id}
+                listingAddress={listing.address}
+                listingBaths={listing.bathrooms}
+                listingBeds={listing.bedrooms}
+                listingPrice={listing.regularPrice}
+                onDelete={onDelete} // Pass onDelete function to ListingCard
+              />
+            </div>
+          ))
+        )}
+      </div>
 
       <button onClick={toggleShowAll} className="mt-2 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded">
         {showAll ? 'Show Less' : 'Show All'}
