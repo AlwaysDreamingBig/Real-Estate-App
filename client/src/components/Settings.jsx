@@ -14,8 +14,87 @@ import {
   faShareAlt, 
   faSave 
 } from '@fortawesome/free-solid-svg-icons';
+import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserFailure, signOutUserStart, signOutUserSuccess } from '../redux/user/userSlice.js';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
+
+
 
 const Settings = () => {
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {currentUser} = useSelector((state) => state.user)
+
+
+  const handleDeleteUser = async () => {
+
+    dispatch(deleteUserStart());
+  
+    try {
+  
+        const res = await fetch(`http://localhost:3000/api/user/delete/${currentUser._id}`, {
+            method: 'DELETE',
+            credentials: 'include',
+          });
+    
+          // Check if the response is ok
+          if (!res.ok) {
+            const errorText = await res.text();
+            throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
+          }
+    
+           // Try to parse the JSON
+          const data = await res.json();
+    
+          if(data.success === false){
+            dispatch(deleteUserFailure(data.message));
+            return;
+          }
+    
+          dispatch(deleteUserSuccess(data));
+    
+          //If everything is alright navigate to the Sign(in page
+          navigate('/signin');
+  
+    } catch (error) {
+        dispatch(deleteUserFailure(error.message));
+    }
+  };
+  
+  const handleSignOutUser = async () => {
+  
+    dispatch(signOutUserStart());
+  
+    try {
+  
+        const res = await fetch('http://localhost:3000/api/auth/signout');
+    
+          // Check if the response is ok
+          if (!res.ok) {
+            const errorText = await res.text();
+            throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
+          }
+    
+           // Try to parse the JSON
+          const data = await res.json();
+    
+          if(data.success === false){
+            dispatch(signOutUserFailure(data.message));
+            return;
+          }
+    
+          dispatch(signOutUserSuccess(data));
+    
+          //If everything is alright navigate to the Sign(in page
+         // navigate('/signin');
+  
+    } catch (error) {
+        dispatch(signOutUserFailure(error.message));
+    }
+  };
+  
 
   return (
     <div className="max-w-lg mx-auto p-8 bg-white rounded-lg shadow-lg max-h-screen overflow-y-auto">
@@ -54,7 +133,7 @@ const Settings = () => {
         <div className='flex justify-between'>
           <div className="flex items-center">
             <div>
-              <button className="text-red-600 hover:underline focus:outline-none">
+              <button className="text-red-600 hover:underline focus:outline-none" onClick={handleDeleteUser}>
                 <FontAwesomeIcon icon={faTrashAlt} className="text-gray-500 mr-3 text-sm" />
                 Delete account
             </button>
@@ -62,7 +141,7 @@ const Settings = () => {
           </div>
           <div className="flex items-center">
             <div>
-              <button className="text-red-600 hover:underline focus:outline-none" >
+              <button className="text-red-600 hover:underline focus:outline-none" onClick={handleSignOutUser}>
                 <FontAwesomeIcon icon={faSignOutAlt} className="text-gray-500 mr-3 text-sm" />
                 Sign Out
             </button>

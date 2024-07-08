@@ -4,7 +4,7 @@ import { useRef, useEffect } from 'react'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 import {app} from '../firebase.js'
 import { useDispatch } from 'react-redux';
-import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserFailure, signOutUserStart, signOutUserSuccess } from '../redux/user/userSlice.js';
+import { updateUserStart, updateUserSuccess, updateUserFailure } from '../redux/user/userSlice.js';
 import { useNavigate } from 'react-router-dom';
 import { extractErrorMessage } from '../../../api/utils/error.js'
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -114,72 +114,7 @@ export default function UpdateProfile() {
         setDisableUpdate(false);
     };
 
-    const handleDeleteUser = async () => {
-
-        dispatch(deleteUserStart());
-
-        try {
-
-            const res = await fetch(`http://localhost:3000/api/user/delete/${currentUser._id}`, {
-                method: 'DELETE',
-                credentials: 'include',
-              });
-        
-              // Check if the response is ok
-              if (!res.ok) {
-                const errorText = await res.text();
-                throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
-              }
-        
-               // Try to parse the JSON
-              const data = await res.json();
-        
-              if(data.success === false){
-                dispatch(deleteUserFailure(data.message));
-                return;
-              }
-        
-              dispatch(deleteUserSuccess(data));
-        
-              //If everything is alright navigate to the Sign(in page
-              navigate('/signin');
-
-        } catch (error) {
-            dispatch(deleteUserFailure(error.message));
-        }
-    };
-
-    const handleSignOutUser = async () => {
-
-        dispatch(signOutUserStart());
-
-        try {
-
-            const res = await fetch('http://localhost:3000/api/auth/signout');
-        
-              // Check if the response is ok
-              if (!res.ok) {
-                const errorText = await res.text();
-                throw new Error(`HTTP error! status: ${res.status} - ${errorText}`);
-              }
-        
-               // Try to parse the JSON
-              const data = await res.json();
-        
-              if(data.success === false){
-                dispatch(signOutUserFailure(data.message));
-                return;
-              }
-        
-              dispatch(signOutUserSuccess(data));
-        
-              //If everything is alright navigate to the Sign(in page
-             // navigate('/signin');
-
-        } catch (error) {
-            dispatch(signOutUserFailure(error.message));
-        }
-    };
+    
 
     const handlePhoneChange = (value) => {
         setPhone(value);
@@ -423,15 +358,6 @@ return (
         >
             Modify
         </button>
-
-        <div className='flex justify-between mt-5'>
-            <span 
-                onClick={handleDeleteUser}
-                className='text-red-600 cursor-pointer font-semibold'>Delete Account</span>
-            <span 
-                onClick={handleSignOutUser}
-                className='text-blue-950 cursor-pointer font-semibold'>Sign Out</span>
-        </div>
     </div>
   )
 }
