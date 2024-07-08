@@ -66,7 +66,7 @@ const ListingsContainer = ({ currentUser }) => {
   }
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col space-y-4 font-semibold text-xl">
       <label htmlFor="Listings">My Listings</label>
       {displayedListings.length === 0 ? (
         <p>No listings found.</p>
@@ -77,6 +77,10 @@ const ListingsContainer = ({ currentUser }) => {
             imgUrl={listing.imageUrls[0]}
             listingName={listing.name}
             listingID={listing._id}
+            listingAddress={listing.address}
+            listingBaths={listing.bathrooms}
+            listingBeds={listing.bedrooms}
+            listingPrice={listing.regularPrice}
             onDelete={onDelete} // Pass onDelete function to ListingCard
           />
         ))
