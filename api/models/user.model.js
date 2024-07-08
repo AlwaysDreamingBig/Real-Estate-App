@@ -77,6 +77,14 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    settings: {
+        emailNotifications: { type: Boolean, default: false },
+        messageNotifications: { type: Boolean, default: false },
+        publicProfile: { type: Boolean, default: false },
+        dataSharing: { type: Boolean, default: false },
+        language: { type: String, default: 'en' },
+        currency: { type: String, default: 'usd' }
+    },
 }, {timestamps: true});
 
 const User = mongoose.model('User', userSchema);

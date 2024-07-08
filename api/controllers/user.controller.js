@@ -19,7 +19,8 @@ export const updateUser = async (req, res, next) => {
     const {
         username, email, password, avatar, bio, age, city, state, country,
         postCode, phoneNumber, agency, agencyLicence, taxNumber, serviceArea,
-        totalListing, propertiesSold, propertiesRent
+        totalListing, propertiesSold, propertiesRent,
+        emailNotifications, messageNotifications, publicProfile, dataSharing, language, currency
     } = req.body;
 
     // Input validation
@@ -54,6 +55,24 @@ export const updateUser = async (req, res, next) => {
         if (totalListing) updateData.totalListing = totalListing;
         if (propertiesSold) updateData.propertiesSold = propertiesSold;
         if (propertiesRent) updateData.propertiesRent = propertiesRent;
+
+        // Update settings if they are provided
+        if (
+            emailNotifications !== undefined ||
+            messageNotifications !== undefined ||
+            publicProfile !== undefined ||
+            dataSharing !== undefined ||
+            language !== undefined ||
+            currency !== undefined
+        ) {
+            updateData.settings = {};
+            if (emailNotifications !== undefined) updateData.settings.emailNotifications = emailNotifications;
+            if (messageNotifications !== undefined) updateData.settings.messageNotifications = messageNotifications;
+            if (publicProfile !== undefined) updateData.settings.publicProfile = publicProfile;
+            if (dataSharing !== undefined) updateData.settings.dataSharing = dataSharing;
+            if (language) updateData.settings.language = language;
+            if (currency) updateData.settings.currency = currency;
+        }
 
         const updatedUser = await User.findByIdAndUpdate(req.params.id, {
             $set: updateData
