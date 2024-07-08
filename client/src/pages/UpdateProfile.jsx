@@ -8,6 +8,8 @@ import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailur
 import { useNavigate } from 'react-router-dom';
 import { extractErrorMessage } from '../../../api/utils/error.js'
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 
 export default function UpdateProfile() {
@@ -22,6 +24,7 @@ export default function UpdateProfile() {
     const [disableUpdate, setDisableUpdate] = useState(true);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [phone, setPhone] = useState(null);
 
 
     console.log(filePerc);
@@ -178,6 +181,11 @@ export default function UpdateProfile() {
         }
     };
 
+    const handlePhoneChange = (value) => {
+        setPhone(value);
+        handleChange({ target: { id: 'phoneNumber', value } });
+      };
+
 return (
     <div className='px-10'>
         <div className='bg-slate-300 p-0.5 mb-4 mt-3 rounded-lg'>
@@ -324,17 +332,30 @@ return (
                         className='border p-3 rounded-lg'/>
                 </div>
 
-                <div className="flex flex-col">
-                    <label htmlFor='phoneNumber' className='mb-1'><i className="fas fa-phone"></i> Phone Number</label>
-                    <input 
-                        type="text" 
-                        placeholder='phoneNumber'
-                        id='phoneNumber'
-                        onChange={handleChange}
-                        defaultValue={currentUser.phoneNumber}
+                {!disableUpdate ?
+                    <div className="flex flex-col">
+                        <label htmlFor='phoneNumber' className='mb-1'><i className="fas fa-phone"></i> Phone Number</label>
+                        <PhoneInput
+                        country={'us'}
+                        value={phone}
+                        onChange={handlePhoneChange}
+                        containerClass='w-full'
                         disabled={disableUpdate}
-                        className='border p-3 rounded-lg'/>
-                </div>
+                        />
+                    </div>
+                    :
+                    <div className="flex flex-col">
+                        <label htmlFor='phoneNumber' className='mb-1'><i className="fas fa-phone"></i> Phone Number</label>
+                        <input 
+                            type="text" 
+                            placeholder='phoneNumber'
+                            id='phoneNumber'
+                            onChange={handleChange}
+                            defaultValue={currentUser.phoneNumber}
+                            disabled={disableUpdate}
+                            className='border p-3 rounded-lg'/>
+                    </div>
+                }
 
                 <div className="flex flex-col">
                     <label htmlFor='agency' className='mb-1'><i className="fas fa-building"></i> Agency</label>
