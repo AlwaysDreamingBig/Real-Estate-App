@@ -25,9 +25,9 @@ const ProfilePictureAndInfo = () => {
   const bioLines = bio.split("\n");
 
   return (
-    <div className="flex flex-row space-x-4 bg-blue-200 p-4 rounded-lg">
+    <div className="flex flex-row space-x-4 bg-transparent rounded-lg">
       {/* First section */}
-      <div className="flex flex-col items-center justify-center bg-red-200 p-4 rounded-lg md:w-2/5">
+      <div className="flex flex-col items-center justify-center bg-white p-4 rounded-lg md:w-2/5">
         <div className='mb-4'>
           <img
             src={currentUser.avatar}
@@ -74,7 +74,7 @@ const ProfilePictureAndInfo = () => {
       </div>
 
       {/* Second section Div */}
-      <div className="flex-1 flex flex-col bg-green-200 p-4 rounded-lg">
+      <div className="flex-1 flex flex-col bg-white p-4 rounded-lg">
         {/* Line 1: About Me and Edit Icon */}
         <div className="flex justify-between items-center mb-7">
           <h3 className="text-xl font-semibold">About Me</h3>
@@ -105,13 +105,13 @@ const ProfilePictureAndInfo = () => {
         ) : (
           <div className="px-4 pb-4">
             {bioLines.map((line, index) => (
-              <p key={index} className="text-gray-700 break-words">{line}</p>
+              <p key={index} className="text-gray-700 break-words mb-7">{line}</p>
             ))}
           </div>
         )}
 
         {/* Line 3: Agency Details */}
-        <div className="grid grid-cols-2 gap-4 mb-7">
+        <div className="grid grid-cols-2 gap-5 mb-16">
           <div className="font-semibold">Agency:</div><div>{currentUser.agency}</div>
           <div className="font-semibold">Agency Licence:</div><div>{currentUser.agencyLicence}</div>
           <div className="font-semibold">Tax Number:</div><div>{currentUser.taxNumber}</div>

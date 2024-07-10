@@ -67,7 +67,7 @@ const ListingsContainer = ({ currentUser }) => {
 
   return (
     <div className="flex flex-col space-y-4 font-semibold text-xl max-h-screen overflow-y-auto">
-      <label htmlFor="Listings">My Listings</label>
+      <label htmlFor="Listings" className='bg-white p-2 mt-0 rounded-lg'>My Listings</label>
       <div>
         {displayedListings.length === 0 ? (
           <p>No listings found.</p>

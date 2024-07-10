@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import ProfilePictureAndInfo from '../components/ProfilePictureAndInfo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faEdit, faPlus, faList, faEnvelope, faL } from '@fortawesome/free-solid-svg-icons';
-import Content4 from '../components/MessagesContainer';
+import MessageBox from '../components/MessagesContainer';
 import Settings from '../components/Settings';
 
 export default function Profile() {
@@ -35,14 +35,14 @@ export default function Profile() {
   };
 
   return (
-  <div className="flex flex-row max-w-full mx-auto bg-gray-100 p-6 space-x-4">
+  <div className="flex flex-row max-w-full mx-auto bg-transparent p-6 space-x-4">
     {/* First Level 1 Div (larger) */}
     <div className="flex flex-col w-2/3 space-y-4">
       {/* First Level 2 Div */}
       <ProfilePictureAndInfo />
       
       {/* Second Level 2 Div */}
-      <div className="flex-1 flex items-center justify-center bg-yellow-200 p-4 rounded-lg">
+      <div className="flex-1 flex items-center justify-center p-4 bg-white rounded-lg mb-3">
         <Link
           to={'/create-listing'}
           className='flex items-center bg-blue-300 text-white px-6 py-3 rounded-lg uppercase text-center hover:opacity-60'
@@ -90,16 +90,16 @@ export default function Profile() {
     </div>
     
     {/* Second Level 1 Div */}
-    <div className="flex-1 flex items-center justify-center bg-purple-200 p-4 rounded-lg">
+    <div className="flex-1 flex items-center justify-center bg-transparent rounded-lg">
       <div className="items-center space-y-4 w-full">
         {showListings && (
-          <section className='mt-4 flex-1'>
+          <section className='flex-1'>
             <ListingsContainer currentUser={currentUser} />
           </section>
         )}
 
         {showUserMessages && (
-          <Content4 className=''/>
+          <MessageBox className=''/>
         )}
 
         {showUserSettings && (

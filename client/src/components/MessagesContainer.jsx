@@ -4,7 +4,7 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { initialMessages } from '../assets/constants';
 
 
-const Content4 = ({className}) => {
+const MessageBox = ({className}) => {
   const [messageList, setMessageList] = useState(initialMessages);
 
   const addRandomMessage = () => {
@@ -25,9 +25,9 @@ const Content4 = ({className}) => {
 
   const getRandomMessage = () => {
     const messages = [
-      "Hello! How are you today?",
-      "What are your plans for the weekend?",
-      "I heard the weather will be nice tomorrow.",
+      "Hi, I’m interested in the property at 123 Main Street. Can you provide more details and schedule a viewing for me?",
+      "Hello, could you send me the floor plan and any recent inspection reports for the house on Elm Street?",
+      "Hi, I’m considering making an offer on the property at 456 Oak Avenue. Is the seller open to negotiations on the price?",
       "Did you see the latest movie?",
       "Let's catch up soon!",
       "How's work going?",
@@ -51,7 +51,8 @@ const Content4 = ({className}) => {
   };
 
   return (
-    <div className={`bg-blue-200 p-3 rounded-lg w-full overflow-y-auto max-h-screen`}>
+    <div className={`rounded-lg w-full overflow-y-auto max-h-screen`}>
+        <label htmlFor=""  className='p-3 text-xl font-semibold'>Message Box</label>
         <div className={`overflow-y-auto ${className}`}>
             {messageList.map((message) => (
                 <div key={message.id} className={`bg-white p-2 m-2 rounded-lg shadow-md ${message.read ? 'bg-gray-200' : 'bg-white'}`}>
@@ -89,4 +90,4 @@ const Content4 = ({className}) => {
   );
 };
 
-export default Content4;
+export default MessageBox;
