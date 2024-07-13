@@ -38,18 +38,23 @@ const sliderStyles = {
   height: "100%",
 };
 
-const dotsContainerStyles = {
+const thumbnailsContainerStyles = {
   display: "flex",
   justifyContent: "center",
+  marginTop: "20px",
 };
 
-const dotStyle = {
-  margin: "0 3px",
+const thumbnailStyles = (isActive) => ({
   cursor: "pointer",
-  fontSize: "20px",
-};
+  border: isActive ? "2px solid blue" : "2px solid transparent",
+  borderRadius: "10px",
+  overflow: "hidden",
+  width: "100px",
+  height: "60px",
+  margin: "0 5px",
+});
 
-const ImageSlider = ({ slides, autoSlide = true }) => {
+const ImageSlider = ({ slides, autoSlide = true, showThumbnails = true }) => {
   const timerRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -105,6 +110,7 @@ const ImageSlider = ({ slides, autoSlide = true }) => {
         >
           ❰
         </div>
+
         <div
           onClick={goToNext}
           style={{
@@ -117,18 +123,22 @@ const ImageSlider = ({ slides, autoSlide = true }) => {
           ❱
         </div>
       </div>
+
       <div style={slideStylesWidthBackground} className="h-[500px]"></div>
-      <div style={dotsContainerStyles}>
-        {slides.map((slide, slideIndex) => (
-          <div
-            style={dotStyle}
-            key={slideIndex}
-            onClick={() => goToSlide(slideIndex)}
-          >
-            ●
-          </div>
-        ))}
-      </div>
+      
+      {showThumbnails && (
+        <div style={thumbnailsContainerStyles}>
+          {slides.map((slide, slideIndex) => (
+            <div
+              key={slideIndex}
+              onClick={() => goToSlide(slideIndex)}
+              style={thumbnailStyles(slideIndex === currentIndex)}
+            >
+              <img src={slide} alt={`Thumbnail ${slideIndex}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
