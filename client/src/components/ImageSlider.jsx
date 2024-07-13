@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 const slideStyles = {
   width: "100%",
+  height: "500px", // Set the height of the slider
   borderRadius: "10px",
   backgroundSize: "cover",
   backgroundPosition: "center",
@@ -78,7 +79,7 @@ const ImageSlider = ({ slides, autoSlide = true, showThumbnails = true }) => {
 
   const slideStylesWidthBackground = {
     ...slideStyles,
-    background: `url(${slides[currentIndex]})`,
+    backgroundImage: `url(${slides[currentIndex]})`,
   };
 
   useEffect(() => {
@@ -123,9 +124,7 @@ const ImageSlider = ({ slides, autoSlide = true, showThumbnails = true }) => {
           ❱
         </div>
       </div>
-
-      <div style={slideStylesWidthBackground} className="h-[500px]"></div>
-      
+      <div style={slideStylesWidthBackground}></div>
       {showThumbnails && (
         <div style={thumbnailsContainerStyles}>
           {slides.map((slide, slideIndex) => (
