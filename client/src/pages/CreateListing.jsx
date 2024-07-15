@@ -5,6 +5,7 @@ import UploadImages from '../components/UploadImages';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import Facilities from '../components/createListing/facilities';
 
 
 export default function CreateListing() {
@@ -33,7 +34,28 @@ export default function CreateListing() {
     userName: currentUser.username,
     houseShare: false,
     houseShareBedrooms: 0,
+    unisexBathroom: false,
+    sharedLivingRoom: false,
+    sharedGarden: false,
+    sharedToilet: false,
+    sharedKitchen: false,
+    sharedBalcony: false,
+    gasHeating: false,
+    sharedKitchenware: false,
+    wifi: false,
+    livingRoomFurniture: false,
+    bed: false,
+    tv: false,
+    bedroomLock: false,
+    washingMachine: false,
+    dryer: false,
+    closet: false,
+    desk: false,
+    airConditioning: false,
+    dishwasher: false,
+    accessFriendly: false,
   });
+  
 
   const handleChange = (e) => {
     const { id, value, type, checked } = e.target;
@@ -382,6 +404,8 @@ export default function CreateListing() {
           </form>
         </div>
       </div>
+
+      <Facilities formData={formData} handleChange={handleChange} /> 
     </main>
   );
 }
