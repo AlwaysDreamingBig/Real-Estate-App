@@ -8,6 +8,8 @@ import {
   faLock, faSoap, faTshirt, faLaptop, faSnowflake, faSink, 
   faWheelchair, faWind 
 } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faVenusMars, faUserGraduate, faMusic, faDog, faSmoking, faCheck, faTimes, faIdCardAlt, faFileSignature, faFileInvoiceDollar } from '@fortawesome/free-solid-svg-icons';
+
 
 const LeftColumn = ({ listing }) => {
   const [showFullDescription, setShowFullDescription] = useState(false);
@@ -42,7 +44,7 @@ const LeftColumn = ({ listing }) => {
     tv: { name: 'TV', icon: faTv },
     bedroomLock: { name: 'Bedroom Lock', icon: faLock },
     washingMachine: { name: 'Washing Machine', icon: faSoap },
-    dryer: { name: 'Dryer', icon: faTshirt },
+    dryer: { name: 'Dryer', icon: faWind },
     closet: { name: 'Closet', icon: faLaptop },
     desk: { name: 'Desk', icon: faLaptop },
     airConditioning: { name: 'Air Conditioning', icon: faSnowflake },
@@ -182,13 +184,37 @@ const LeftColumn = ({ listing }) => {
         </div>
       )}
 
-      {/* Placeholder sections */}
-      <div className="bg-white p-2 shadow-md">
-        <h2 className="text-gray-800 text-center text-2xl">Section 6</h2>
-        <p className="text-gray-800 text-lg">
-          This is the sixth section of the left column. You can put any content here.
-        </p>
+      {/* Section 6: Rules and Preferences */}
+      <div className="bg-blue-800 p-4">
+        <h2 className="text-white text-center text-2xl">
+          <FontAwesomeIcon icon={faTimes} className="mr-2" />
+          Rules and Preferences
+        </h2>
+        <div className="text-white mt-4 space-y-2">
+          <p className="flex items-center"><FontAwesomeIcon icon={faUser} className="mr-2" /> Age: No preference</p>
+          <p className="flex items-center"><FontAwesomeIcon icon={faVenusMars} className="mr-2" /> Gender: No preference</p>
+          <p className="flex items-center"><FontAwesomeIcon icon={faUserGraduate} className="mr-2" /> Tenant type: Students, working professionals</p>
+          <p className="flex items-center"><FontAwesomeIcon icon={faBed} className="mr-2" /> Suitable for couples: Yes</p>
+          <p className="flex items-center"><FontAwesomeIcon icon={faMusic} className="mr-2" /> Playing Musical Instruments allowed: Yes</p>
+          <p className="flex items-center"><FontAwesomeIcon icon={faDog} className="mr-2" /> Pets allowed: Negotiable</p>
+          <p className="flex items-center"><FontAwesomeIcon icon={faSmoking} className="mr-2" /> Smoking allowed: Negotiable</p>
+        </div>
+        <div className="border-t border-white mt-4">
+          <h2 className="text-white text-center text-2xl mt-8">
+            <FontAwesomeIcon icon={faCheck} className="mr-2" />
+            Documents required to book
+          </h2>
+          <p className="text-white mt-4">
+            The landlord will ask for them to accept your booking request.
+          </p>
+          <ul className="text-white mt-4 list-disc pl-4">
+            <li><FontAwesomeIcon icon={faIdCardAlt} className="mr-2" /> Proof of identity: Government issued ID, passport, driver’s license.</li>
+            <li><FontAwesomeIcon icon={faFileSignature} className="mr-2" /> Proof of enrollment or occupation: University enrollment certificate, internship or employment contract.</li>
+            <li><FontAwesomeIcon icon={faFileInvoiceDollar} className="mr-2" /> Proof of income: Salary slip or bank statements from you or your sponsor.</li>
+          </ul>
+        </div>
       </div>
+
       <div className="bg-white p-2 shadow-md">
         <h2 className="text-gray-800 text-center text-2xl">Section 7</h2>
         <p className="text-gray-800 text-lg" id="map">
