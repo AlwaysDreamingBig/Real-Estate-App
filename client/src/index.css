@@ -5,3 +5,18 @@
 body{
     background-color: rgb(228, 242, 240);
 }
+
+.arrow {
+    background-color: transparent;
+  }
+  
+  .arrow:hover {
+    background-color: rgba(0, 0, 255, 0.2); /* Light blue background */
+    color: darkblue; /* Slightly darker blue for the arrow */
+  }
+  
+  .arrow:active {
+    background-color: rgba(0, 0, 255, 0.4); /* Darker blue background */
+    color: navy; /* Even darker blue for the arrow */
+  }
+  
