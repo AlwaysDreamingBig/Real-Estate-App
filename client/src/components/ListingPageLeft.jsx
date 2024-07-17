@@ -3,17 +3,15 @@ import ImageSlider from './ImageSlider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faTag, faDollarSign, faMapMarkerAlt, faMap, faAngleDown, 
-  faAngleUp, faBed, faCouch, faToilet, faTree, faRestroom, 
-  faUtensils, faBacon, faFire, faBlender, faWifi, faTv, 
-  faLock, faSoap, faTshirt, faLaptop, faSnowflake, faSink, 
-  faWheelchair, faWind 
+  faAngleUp, faBed
 } from '@fortawesome/free-solid-svg-icons';
 import { faUser, faVenusMars, faUserGraduate, faMusic, faDog, faSmoking, faCheck, faTimes, faIdCardAlt, faFileSignature, faFileInvoiceDollar } from '@fortawesome/free-solid-svg-icons';
+import Amenities from './createListing/ListingPage/Amenities';
+import Note from './createListing/ListingPage/Note';
 
 
-const LeftColumn = ({ listing }) => {
+const LeftColumn = ({ listing, note }) => {
   const [showFullDescription, setShowFullDescription] = useState(false);
-  const [showModal, setShowModal] = useState(false);
 
   const typeColors = {
     rent: 'bg-green-500',
@@ -25,32 +23,8 @@ const LeftColumn = ({ listing }) => {
     setShowFullDescription(!showFullDescription);
   };
 
-  const toggleModal = () => {
-    setShowModal(!showModal);
-  };
 
-  const amenities = {
-    unisexBathroom: { name: 'Unisex Bathroom', icon: faRestroom },
-    sharedLivingRoom: { name: 'Shared Living Room', icon: faCouch },
-    sharedGarden: { name: 'Shared Garden', icon: faTree },
-    sharedToilet: { name: 'Shared Toilet', icon: faToilet },
-    sharedKitchen: { name: 'Shared Kitchen', icon: faUtensils },
-    sharedBalcony: { name: 'Shared Balcony', icon: faBacon },
-    gasHeating: { name: 'Gas Heating', icon: faFire },
-    sharedKitchenware: { name: 'Shared Kitchenware', icon: faBlender },
-    wifi: { name: 'WiFi', icon: faWifi },
-    livingRoomFurniture: { name: 'Living Room Furniture', icon: faCouch },
-    bed: { name: 'Bed', icon: faBed },
-    tv: { name: 'TV', icon: faTv },
-    bedroomLock: { name: 'Bedroom Lock', icon: faLock },
-    washingMachine: { name: 'Washing Machine', icon: faSoap },
-    dryer: { name: 'Dryer', icon: faWind },
-    closet: { name: 'Closet', icon: faLaptop },
-    desk: { name: 'Desk', icon: faLaptop },
-    airConditioning: { name: 'Air Conditioning', icon: faSnowflake },
-    dishwasher: { name: 'Dishwasher', icon: faSink },
-    accessFriendly: { name: 'Access Friendly', icon: faWheelchair },
-  };
+
 
   return (
     <div className="w-full lg:w-2/3 bg-white p-4 space-y-4">
@@ -139,50 +113,7 @@ const LeftColumn = ({ listing }) => {
       </div>
 
       {/* Section 5: Amenities */}
-      <div className="bg-white p-2 shadow-md">
-        <h2 className="text-gray-800 text-center text-2xl">Amenities</h2>
-        <div className="grid grid-cols-2 gap-2 mt-2">
-          {Object.keys(amenities).slice(0, 10).map((key) => (
-            <div key={key} className="flex items-center text-gray-800 text-lg">
-              <FontAwesomeIcon icon={amenities[key].icon} className="mr-2" />
-              <span className={`${listing[key] ? '' : 'line-through'}`}>
-                {amenities[key].name}
-              </span>
-            </div>
-          ))}
-        </div>
-        <button
-          className="text-blue-500 text-sm mt-2 hover:underline focus:outline-none"
-          onClick={toggleModal}
-        >
-          Show All Amenities
-        </button>
-      </div>
-
-      {/* Modal for showing all amenities */}
-      {showModal && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-            <h2 className="text-gray-800 text-2xl mb-4">All Amenities</h2>
-            <div className="grid grid-cols-2 gap-2">
-              {Object.keys(amenities).map((key) => (
-                <div key={key} className="flex items-center text-gray-800 text-lg">
-                  <FontAwesomeIcon icon={amenities[key].icon} className="mr-2" />
-                  <span className={`${listing[key] ? '' : 'line-through'}`}>
-                    {amenities[key].name}
-                  </span>
-                </div>
-              ))}
-            </div>
-            <button
-              className="text-blue-500 text-sm mt-4 hover:underline focus:outline-none"
-              onClick={toggleModal}
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+      <Amenities listing={listing}/>
 
       {/* Section 6: Rules and Preferences */}
       <div className="bg-blue-800 p-4">
@@ -214,6 +145,8 @@ const LeftColumn = ({ listing }) => {
           </ul>
         </div>
       </div>
+      
+      <Note score={note}/>
 
       <div className="bg-white p-2 shadow-md">
         <h2 className="text-gray-800 text-center text-2xl">Section 7</h2>
@@ -221,6 +154,7 @@ const LeftColumn = ({ listing }) => {
           This is the seventh section of the left column, where the map will appear.
         </p>
       </div>
+
       <div className="bg-white p-2 shadow-md">
         <h2 className="text-gray-800 text-center text-2xl">Section 8</h2>
         <p className="text-gray-800 text-lg">
