@@ -8,10 +8,12 @@ import {
 import { faUser, faVenusMars, faUserGraduate, faMusic, faDog, faSmoking, faCheck, faTimes, faIdCardAlt, faFileSignature, faFileInvoiceDollar } from '@fortawesome/free-solid-svg-icons';
 import Amenities from './createListing/ListingPage/Amenities';
 import Note from './createListing/ListingPage/Note';
+import MapSection from './createListing/MapSection';
 
 
 const LeftColumn = ({ listing, note }) => {
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const address = '12 Rue de Rome, Strasbourg 67000';
 
   const typeColors = {
     rent: 'bg-green-500',
@@ -148,11 +150,9 @@ const LeftColumn = ({ listing, note }) => {
       
       <Note score={note}/>
 
-      <div className="bg-white p-2 shadow-md">
-        <h2 className="text-gray-800 text-center text-2xl">Section 7</h2>
-        <p className="text-gray-800 text-lg" id="map">
-          This is the seventh section of the left column, where the map will appear.
-        </p>
+      <div className="bg-white p-2 shadow-md" id='map'>
+         {/* Map Section */}
+        <MapSection address={listing.address}/>
       </div>
 
       <div className="bg-white p-2 shadow-md">
