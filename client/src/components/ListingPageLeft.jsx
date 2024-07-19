@@ -9,6 +9,7 @@ import { faUser, faVenusMars, faUserGraduate, faMusic, faDog, faSmoking, faCheck
 import Amenities from './createListing/ListingPage/Amenities';
 import Note from './createListing/ListingPage/Note';
 import MapSection from './createListing/MapSection';
+import CommentSection from './createListing/ListingPage/CommentSection';
 
 
 const LeftColumn = ({ listing, note }) => {
@@ -150,16 +151,13 @@ const LeftColumn = ({ listing, note }) => {
       
       <Note score={note}/>
 
-      <div className="bg-white p-2 shadow-md" id='map'>
+      <div className="bg-white p-2 shadow-md z-10" id='map'>
          {/* Map Section */}
         <MapSection address={listing.address}/>
       </div>
 
-      <div className="bg-white p-2 shadow-md">
-        <h2 className="text-gray-800 text-center text-2xl">Section 8</h2>
-        <p className="text-gray-800 text-lg">
-          This is the eighth section of the left column. You can put any content here.
-        </p>
+      <div className="bg-white p-2 shadow-md z-40">
+        <CommentSection />
       </div>
     </div>
   );
