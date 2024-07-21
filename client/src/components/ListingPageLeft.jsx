@@ -10,9 +10,10 @@ import Amenities from './createListing/ListingPage/Amenities';
 import Note from './createListing/ListingPage/Note';
 import MapSection from './createListing/MapSection';
 import CommentSection from './createListing/ListingPage/CommentSection';
+import AdvisorCard from './AdvisorCard';
 
 
-const LeftColumn = ({ listing, note }) => {
+const LeftColumn = ({ listing, note, profileImage, advertiserName }) => {
   const [showFullDescription, setShowFullDescription] = useState(false);
   const address = '12 Rue de Rome, Strasbourg 67000';
 
@@ -158,6 +159,10 @@ const LeftColumn = ({ listing, note }) => {
 
       <div className="bg-white p-2 shadow-md z-40">
         <CommentSection />
+      </div>
+
+      <div className="bg-white p-2 shadow-md z-40">
+        <AdvisorCard profileImage={profileImage}/>
       </div>
     </div>
   );

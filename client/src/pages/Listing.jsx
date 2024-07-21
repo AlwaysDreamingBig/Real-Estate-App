@@ -63,7 +63,11 @@ export default function Listing() {
 
  {/* Two-column layout */}
  <div className="flex flex-1">
- <LeftColumn listing={listing} note={4.87}/>
+    <LeftColumn 
+      listing={listing} 
+      note={4.87} 
+      profileImage={currentUser.avatar} //change this to listing.useRef.avatar
+      advertiserName={currentUser.username}/>
    
    <RightColumn 
      profileImage={currentUser.avatar} //change this to listing.useRef.avatar
