@@ -13,9 +13,8 @@ import CommentSection from './createListing/ListingPage/CommentSection';
 import AdvisorCard from './AdvisorCard';
 
 
-const LeftColumn = ({ listing, note, profileImage, advertiserName }) => {
+const LeftColumn = ({ listing, note, profileImage, advertiserName, commentRef, advisorRef }) => {
   const [showFullDescription, setShowFullDescription] = useState(false);
-  const address = '12 Rue de Rome, Strasbourg 67000';
 
   const typeColors = {
     rent: 'bg-green-500',
@@ -157,11 +156,13 @@ const LeftColumn = ({ listing, note, profileImage, advertiserName }) => {
         <MapSection address={listing.address}/>
       </div>
 
-      <div className="bg-white p-2 shadow-md z-40">
-        <CommentSection />
+      <div 
+        className="bg-white p-2 shadow-md z-40"
+        ref={commentRef}>
+          <CommentSection />
       </div>
 
-      <div className="bg-white p-2 shadow-md z-40">
+      <div className="bg-white p-2 shadow-md z-40" ref={advisorRef}>
         <AdvisorCard profileImage={profileImage}/>
       </div>
     </div>

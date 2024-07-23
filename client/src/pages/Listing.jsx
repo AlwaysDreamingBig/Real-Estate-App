@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 export default function Listing() {
 
   const commentsRef = useRef(null);
+  const advisorRef = useRef(null);
 
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -48,6 +49,10 @@ export default function Listing() {
     commentsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  const handleAdvisorClick = () => {
+    advisorRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   return (
     <main>
       {loading && <p className='text-center my-7 text-2xl'>Loading...</p>}
@@ -55,40 +60,41 @@ export default function Listing() {
         <p className='text-center my-7 text-2xl'>Something went wrong!</p>
       )}
       {listing && !loading && !error && (
- <div className="my-4 mx-4 md:my-8 md:mx-12 lg:my-12 lg:mx-24 xl:my-16 xl:mx-32 flex flex-col h-screen">
- {/* Title */}
- <div className="bg-gray-800 text-white text-center p-4">
-   <h1 className="text-2xl">Title Here</h1>
- </div>
+        <div className="my-4 mx-2 md:my-1 md:mx-4 lg:my-2 lg:mx-24 xl:my-4 xl:mx-10 flex flex-col h-screen">
+          {/* Title */}
+          <div className=" text-black text-start p-4 italic underline">
+            <h1 className="text-2xl">Title Here</h1>
+          </div>
 
- {/* Two-column layout */}
- <div className="flex flex-1">
-    <LeftColumn 
-      listing={listing} 
-      note={4.87} 
-      profileImage={currentUser.avatar} //change this to listing.useRef.avatar
-      advertiserName={currentUser.username}/>
-   
-   <RightColumn 
-     profileImage={currentUser.avatar} //change this to listing.useRef.avatar
-     advertiserName={currentUser.username}
-     note={4.87}
-     numberOfComments={10}
-     onClickNumberOfComments={handleNumberOfCommentsClick}
-   />
- </div>
+          {/* Two-column layout */}
+          <div className="flex">
+              <LeftColumn 
+                  listing={listing} 
+                  note={4.87} 
+                  profileImage={currentUser.avatar} //change this to listing.useRef.avatar
+                  advertiserName={currentUser.username}
+                  commentRef={commentsRef}
+                  advisorRef={advisorRef}/>
 
- {/* Footer */}
- <div className="bg-gray-800 text-white text-center p-4">
-   <p>Footer Content Here</p>
- </div>
+              <RightColumn 
+                profileImage={currentUser.avatar} //change this to listing.useRef.avatar
+                advertiserName={currentUser.username}
+                note={4.87}
+                numberOfComments={10}
+                onClickNumberOfComments={handleNumberOfCommentsClick}
+                onClickAdvisor={handleAdvisorClick}
+              />
+          </div>
 
- <section id="comments" ref={commentsRef}>
-        comment section
-  </section>
+          {/* Footer */}
+          <div className="bg-gray-800 text-white text-center p-4">
+            <p>Footer Content Here</p>
+          </div>
 
-
-</div>
+          <section id="comments" >
+                  comment section
+          </section>
+        </div>
       )}
     </main>
   );
