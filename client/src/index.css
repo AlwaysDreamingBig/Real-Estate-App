@@ -19,4 +19,15 @@ body{
     background-color: rgba(0, 0, 255, 0.4); /* Darker blue background */
     color: navy; /* Even darker blue for the arrow */
   }
+
+  /* Custom class to hide the scrollbar */
+.hide-scrollbar {
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
+
   
