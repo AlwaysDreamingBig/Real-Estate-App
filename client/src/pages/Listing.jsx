@@ -22,9 +22,9 @@ export default function Listing() {
       try {
         setLoading(true);
         const res = await fetch(`http://localhost:3000/api/listing/getListing/${params.listingID}`, {
-            method: 'GET',
-            credentials: 'include',
-          });
+          method: 'GET',
+          credentials: 'include',
+        });
 
         const data = await res.json();
 
@@ -76,24 +76,22 @@ export default function Listing() {
                   commentRef={commentsRef}
                   advisorRef={advisorRef}/>
 
-              <RightColumn 
-                profileImage={currentUser.avatar} //change this to listing.useRef.avatar
+            <div className="sticky top-8 h-fit self-start">
+              <RightColumn
+                profileImage={currentUser.avatar} // change this to listing.userRef.avatar
                 advertiserName={currentUser.username}
                 note={4.87}
                 numberOfComments={10}
                 onClickNumberOfComments={handleNumberOfCommentsClick}
                 onClickAdvisor={handleAdvisorClick}
               />
+            </div>
           </div>
 
           {/* Footer */}
-          <div className="bg-gray-800 text-white text-center p-4">
+          <div className="bg-gray-800 text-white text-center p-4 mt-10">
             <p>Footer Content Here</p>
           </div>
-
-          <section id="comments" >
-                  comment section
-          </section>
         </div>
       )}
     </main>

@@ -49,7 +49,7 @@ const RightColumn = ({ profileImage, advertiserName, note = 0, numberOfComments 
   };
 
   return (
-    <div className="hidden lg:flex lg:w-1/3 flex-col bg-white p-4 space-y-4 relative h-[80vh] ml-4 rounded-lg border border-slate-400">
+    <div className="hidden lg:flex lg:w-[400px] shadow-sm flex-col bg-white p-4 space-y-4 relative h-[80vh] ml-4 rounded-lg border border-slate-400">
       {/* Profile and Advertiser Info */}
       <div className="flex items-center shadow p-2">
         <img src={profileImage} alt="Advertised by Profile" className="w-20 h-20 rounded-full mb-2 mr-10 ml-10 cursor-pointer" onClick={handleClickAdvisor}/>

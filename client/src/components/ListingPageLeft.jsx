@@ -30,7 +30,7 @@ const LeftColumn = ({ listing, note, profileImage, advertiserName, commentRef, a
 
 
   return (
-    <div className="w-full lg:w-2/3 bg-white p-4 space-y-4">
+    <div className="w-full bg-white p-4 space-y-4 border border-slate-800 rounded-lg">
       {/* Section 1: Image Slider */}
       <div className="bg-white p-2 shadow-md">
         <ImageSlider slides={listing.imageUrls} autoSlide={false} showThumbnails={true} />
