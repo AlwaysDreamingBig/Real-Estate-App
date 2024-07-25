@@ -173,9 +173,9 @@ const LeftColumn = ({ listing, note, profileImage, advertiserName, commentRef, a
       </Section>
 
       {/* Section 10: Advisor Card */}
-      <Section>
-        <div className="bg-white p-2 shadow-md z-40" ref={advisorRef}>
-          <AdvisorCard profileImage={profileImage} />
+      <Section title="Let's meet your Host! 😊🤩" >
+        <div className="bg-white p-2 shadow-lg z-40" ref={advisorRef}>
+          <AdvisorCard advisorID={listing.userRef}/>
         </div>
       </Section>
     </div>
