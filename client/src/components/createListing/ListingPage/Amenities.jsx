@@ -41,7 +41,6 @@ export default function Amenities({listing}) {
   return (
     <section>
       <div className="bg-white p-2 shadow-md">
-        <h2 className="text-gray-800 text-center text-2xl">Amenities</h2>
         <div className="grid grid-cols-2 gap-2 mt-2">
           {Object.keys(amenities).slice(0, 10).map((key) => (
             <div key={key} className="flex items-center text-gray-800 text-lg">

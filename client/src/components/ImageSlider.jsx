@@ -124,7 +124,7 @@ const ImageSlider = ({ slides, autoSlide = true, showThumbnails = true }) => {
           ❱
         </div>
       </div>
-      <div style={slideStylesWidthBackground}></div>
+      <div style={slideStylesWidthBackground} className="border-4 border-lg border-blue-600"></div>
       {showThumbnails && (
         <div style={thumbnailsContainerStyles}>
           {slides.map((slide, slideIndex) => (
@@ -133,7 +133,7 @@ const ImageSlider = ({ slides, autoSlide = true, showThumbnails = true }) => {
               onClick={() => goToSlide(slideIndex)}
               style={thumbnailStyles(slideIndex === currentIndex)}
             >
-              <img src={slide} alt={`Thumbnail ${slideIndex}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <img src={slide} alt={`Thumbnail ${slideIndex}`} style={{ width: "100%", height: "100%", objectFit: "cover" }} className="border border-gray-400" />
             </div>
           ))}
         </div>
