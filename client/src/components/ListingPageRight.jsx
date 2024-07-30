@@ -1,7 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import fetchUserInfo from './utility/fetchers';
+import Modal from './Modal';
+import ContactAdvisor from './ContactBox';
 
-const RightColumn = ({ profileImage, advertiserName, note = 0, numberOfComments = 0, onClickNumberOfComments, onClickAdvisor }) => {
+const RightColumn = ({ profileImage, advertiserName, note = 0, numberOfComments = 0, onClickNumberOfComments, onClickAdvisor, advisorID }) => {
   const [showPreview, setShowPreview] = useState(false);
+  const [advisor, setAdvisor] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   const togglePreview = () => {
     setShowPreview(!showPreview);
@@ -48,15 +56,54 @@ const RightColumn = ({ profileImage, advertiserName, note = 0, numberOfComments 
     }
   };
 
+  useEffect(() => {
+    const getAdvisorInfo = async () => {
+      try {
+        const advisorData = await fetchUserInfo(advisorID);
+        setAdvisor(advisorData);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getAdvisorInfo();
+  }, [advisorID]);
+
+//Message box popup fn ----------------------------------------------
+  const advisor2 = {
+    name: 'Sofia',
+  };
+
+  const sender = 'John Doe';
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  //5----------------------------------------------
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!advisor) {
+    return <div>No advisor found</div>;
+  }
+
   return (
     <div className="hidden lg:flex lg:w-[400px] shadow-sm flex-col bg-white p-4 space-y-4 relative h-[80vh] ml-4 rounded-lg border border-slate-400">
       {/* Profile and Advertiser Info */}
       <div className="flex items-center shadow p-2">
-        <img src={profileImage} alt="Advertised by Profile" className="w-20 h-20 rounded-full mb-2 mr-10 ml-10 cursor-pointer" onClick={handleClickAdvisor}/>
+        <img src={advisor.avatar} alt="Advertised by Profile" className="w-20 h-20 rounded-full mb-2 mr-10 ml-10 cursor-pointer" onClick={handleClickAdvisor}/>
 
         <div className='flex flex-col items-center'>
           <p className="text-slate-800 text-center text-lg font-serif">Advertised by</p>
-          <p className="text-slate-800 text-center text-lg font-semibold font-serif cursor-pointer" onClick={handleClickAdvisor}>{advertiserName}</p>
+          <p className="text-slate-800 text-center text-lg font-semibold font-serif cursor-pointer" onClick={handleClickAdvisor}>{advisor.username}</p>
         </div>
       </div>
 
@@ -72,9 +119,13 @@ const RightColumn = ({ profileImage, advertiserName, note = 0, numberOfComments 
           <input type="date" id="moveOutDate" name="moveOutDate" className="w-full bg-gray-800 text-white p-2 rounded-md" />
         </div>
 
-        <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md mb-2 font-serif">
+        <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md mb-2 font-serif" onClick={openModal}>
           Contact Advisor
         </button>
+
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
+          <ContactAdvisor advisor={advisor} sender={sender} onClose={closeModal} />
+        </Modal>
 
         <label
           className="text-slate-800 cursor-pointer flex items-center font-serif"
