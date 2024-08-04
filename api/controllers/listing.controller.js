@@ -112,3 +112,111 @@ export const getListing = async (req, res, next) => {
       next(error)
   }
 };
+
+export const searchListings = async (req, res, next) => {
+  try {
+    // Limit and startIndex for pagination with default values
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const startIndex = parseInt(req.query.startIndex, 10) || 0;
+
+    // Offer filter with default value
+    let offer = req.query.offer;
+    if (offer === undefined || offer === 'false') {
+      offer = { $in: [true, false] };
+    } else {
+      offer = { $eq: true };
+    }
+
+    // Parking filter with default value
+    let parking = req.query.parking;
+    if (parking === undefined || parking === 'false') {
+      parking = { $in: [true, false] };
+    } else {
+      parking = { $eq: true };
+    }
+
+    // Search term with regex for case-insensitive search
+    const searchTerm = req.query.searchTerm || '';
+
+    // Sort field and order
+    const sort = req.query.sort || 'createdAt';
+    const order = req.query.order === 'asc' ? 1 : -1;
+
+    // Price range filtering
+    const minPrice = parseFloat(req.query.minPrice) || 0;
+    const maxPrice = parseFloat(req.query.maxPrice) || Number.MAX_VALUE;
+
+    // City and country filtering
+    const city = req.query.city || '';
+    const country = req.query.country || '';
+
+    // Construct address regex with optional city and country
+    let addressRegex = '';
+    if (city && country) {
+      addressRegex = `${city}(?:.*?,\\s*|\\s+.*?\\s+)?${country}`;
+    } else if (city) {
+      addressRegex = `${city}`;
+    } else if (country) {
+      addressRegex = `${country}`;
+    }
+
+    // Bathroom, bedroom, and houseShareBedrooms filters
+    const minBathrooms = parseInt(req.query.minBathrooms, 10) || 0;
+    const maxBathrooms = parseInt(req.query.maxBathrooms, 10) || Number.MAX_VALUE;
+    const minBedrooms = parseInt(req.query.minBedrooms, 10) || 0;
+    const maxBedrooms = parseInt(req.query.maxBedrooms, 10) || Number.MAX_VALUE;
+    const minHouseShareBedrooms = parseInt(req.query.minHouseShareBedrooms, 10) || 0;
+    const maxHouseShareBedrooms = parseInt(req.query.maxHouseShareBedrooms, 10) || Number.MAX_VALUE;
+
+    // Type filter
+    const type = req.query.type || '';
+
+    // Additional boolean feature filters
+    const booleanFilters = {};
+    const booleanFields = [
+      'unisexBathroom', 'sharedLivingRoom', 'sharedGarden', 'sharedToilet', 
+      'sharedKitchen', 'sharedBalcony', 'gasHeating', 'sharedKitchenware', 
+      'wifi', 'livingRoomFurniture', 'bed', 'tv', 'bedroomLock', 
+      'washingMachine', 'dryer', 'closet', 'desk', 'airConditioning', 
+      'dishwasher', 'accessFriendly'
+    ];
+
+    booleanFields.forEach(field => {
+      const value = req.query[field];
+      if (value === 'true') {
+        booleanFilters[field] = true;
+      } else if (value === 'false') {
+        booleanFilters[field] = false;
+      }
+      // If value is undefined, it is not added to the query
+    });
+
+    // Construct query
+    const query = {
+      name: { $regex: searchTerm, $options: 'i' },
+      offer,
+      parking,
+      regularPrice: { $gte: minPrice, $lte: maxPrice },
+      address: { $regex: addressRegex, $options: 'i' },
+      bathrooms: { $gte: minBathrooms, $lte: maxBathrooms },
+      bedrooms: { $gte: minBedrooms, $lte: maxBedrooms },
+      houseShareBedrooms: { $gte: minHouseShareBedrooms, $lte: maxHouseShareBedrooms },
+      type: type ? { $regex: type, $options: 'i' } : { $exists: true }, // Handle type filter
+      ...booleanFilters, // Spread the boolean feature filters into the query
+    };
+
+    // Find listings with filters, sorting, and pagination
+    const listings = await Listing.find(query)
+      .sort({ [sort]: order })
+      .limit(limit)
+      .skip(startIndex);
+
+    // Return the listings
+    return res.status(200).json(listings);
+  } catch (error) {
+    // Improved error handling
+    return res.status(500).json({ message: 'An error occurred while searching for listings.', error: error.message });
+  }
+};
+
+
