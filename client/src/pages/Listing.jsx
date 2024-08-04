@@ -85,6 +85,7 @@ export default function Listing() {
                 onClickNumberOfComments={handleNumberOfCommentsClick}
                 onClickAdvisor={handleAdvisorClick}
                 advisorID={listing.userRef}
+                listing={listing}
               />
             </div>
           </div>

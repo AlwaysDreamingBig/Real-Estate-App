@@ -2,14 +2,17 @@ import React, { useState, useEffect } from 'react';
 import fetchUserInfo from './utility/fetchers';
 import Modal from './Modal';
 import ContactAdvisor from './ContactBox';
+import Preview from './Preview';
 
-const RightColumn = ({ profileImage, advertiserName, note = 0, numberOfComments = 0, onClickNumberOfComments, onClickAdvisor, advisorID }) => {
+const RightColumn = ({ profileImage, advertiserName, note = 0, numberOfComments = 0, onClickNumberOfComments, onClickAdvisor, advisorID, listing }) => {
   const [showPreview, setShowPreview] = useState(false);
   const [advisor, setAdvisor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [moveInDate, setMoveInDate] = useState('');
+  const [moveOutDate, setMoveOutDate] = useState('');
 
   const togglePreview = () => {
     setShowPreview(!showPreview);
@@ -111,12 +114,26 @@ const RightColumn = ({ profileImage, advertiserName, note = 0, numberOfComments 
       <div className="flex-1 p-4 flex flex-col relative">
         <div className="">
           <label htmlFor="moveInDate" className="block text-white mb-2">Move-in Date:</label>
-          <input type="date" id="moveInDate" name="moveInDate" className="w-full bg-gray-800 text-white p-2 rounded-md" />
+          <input
+            type="date"
+            id="moveInDate"
+            name="moveInDate"
+            className="w-full bg-gray-800 text-white p-2 rounded-md"
+            value={moveInDate}
+            onChange={(e) => setMoveInDate(e.target.value)}
+          />
         </div>
 
         <div className="mb-8">
           <label htmlFor="moveOutDate" className="block text-white mb-2">Move-out Date:</label>
-          <input type="date" id="moveOutDate" name="moveOutDate" className="w-full bg-gray-800 text-white p-2 rounded-md" />
+          <input
+            type="date"
+            id="moveOutDate"
+            name="moveOutDate"
+            className="w-full bg-gray-800 text-white p-2 rounded-md"
+            value={moveOutDate}
+            onChange={(e) => setMoveOutDate(e.target.value)}
+          />
         </div>
 
         <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md mb-2 font-serif" onClick={openModal}>
@@ -137,18 +154,30 @@ const RightColumn = ({ profileImage, advertiserName, note = 0, numberOfComments 
           See Preview
         </label>
 
+        <Modal isOpen={isModalOpen} onClose={closeModal}>
+          <ContactAdvisor advisor={advisor} sender={sender} onClose={closeModal} />
+        </Modal>
+
+
         {/* Right Preview */}
         {showPreview && (
-          <div className="absolute right-0 top-0 bg-gray-800 text-white p-4 mt-8 mr-4 rounded-md shadow-lg">
-            <button className="absolute top-0 right-0 p-2 text-white hover:text-gray-300" onClick={closePreview}>
+          <div className="fixed top-0 right-0 h-full w-2/5 bg-white shadow-lg p-4 overflow-y-auto">
+            <button className="absolute top-0 right-0 p-2 text-red-600 hover:text-gray-300" onClick={closePreview}>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <h2 className="text-lg font-bold mb-2">Preview Content</h2>
-            <p>This is the content that appears in the preview.</p>
-            {/* Add more content or components as needed */}
-          </div>
+
+            <Preview 
+              entryDate={moveInDate}
+              endingDate={moveOutDate}
+              monthlyPrice={listing.regularPrice}
+              advisor={'Advisor'}
+              listing={listing}
+              electricity={listing.electricity}
+              water={listing.water}
+            />
+         </div>
         )}
       </div>
 

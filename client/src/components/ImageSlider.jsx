@@ -13,7 +13,7 @@ const arrowBaseStyles = {
   top: "50%",
   transform: "translate(0, -50%)",
   fontSize: "45px",
-  zIndex: 1,
+  zIndex: 0,
   cursor: "pointer",
   borderRadius: "50%",
   width: "60px",
