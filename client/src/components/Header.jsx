@@ -1,11 +1,17 @@
 import React from 'react';
 import {FaSearch} from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 export default function Header() {
 
     const { currentUser } = useSelector(state => state.user);
+    const navigate = useNavigate();
+
+    const handleFilter = () => {
+        navigate('search');
+    };
+
   return (
     <header className='bg-white shadow-md'>
         {/**
@@ -39,16 +45,23 @@ export default function Header() {
                 </div>
             </Link>
 
-                    {/*Barre de recherche*/}
-            <form className='bg-gray-100 p-3 rounded-lg flex items-center'>
-                <input 
-                    type="text" 
-                    placeholder='Search...' 
-                    className='bg-transparent focus:outline-none w-28 sm:w-80'
-                />
+            <div className='flex space-x-4'>
+                {/*Barre de recherche*/}
+                <form className='bg-gray-100 p-3 rounded-lg flex items-center'>
+                    <input 
+                        type="text" 
+                        placeholder='Search...' 
+                        className='bg-transparent focus:outline-none w-28 sm:w-80'
+                    />
 
-                <FaSearch className='text-slate-900'/>
-            </form>
+                    <FaSearch className='text-slate-900'/>
+                </form>
+
+                <button onClick={handleFilter} className='italic'>
+                    Filters
+                </button>
+            </div>
+
 
                     {/*Liste des liens*/}
             <ul className='flex gap-5'>

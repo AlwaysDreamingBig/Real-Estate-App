@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { createQueryString } from './utility/createQuery'; 
+import ListingCard from './ListingPreview';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const SearchListings = () => {
   const [formData, setFormData] = useState({
@@ -45,6 +47,7 @@ const SearchListings = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -63,18 +66,9 @@ const SearchListings = () => {
     setError('');
 
     try {
-      const res = await fetch(`http://localhost:3000/api/listing/searchListing?${queryString}`, {
-        method: 'GET',
-        credentials: 'include',
-      });
 
-      if (!res.ok) {
-        throw new Error('Cannot load the listings');
-      }
+      navigate(`/results?${queryString}`);
 
-      const data = await res.json();
-      console.log(data);
-      // You can handle the response data here, e.g., set it to state
     } catch (error) {
       setError(error.message || 'Error fetching listings');
     } finally {

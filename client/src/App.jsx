@@ -10,6 +10,8 @@ import CreateListing from './pages/CreateListing';
 import UpdateListing from './pages/UpdateListing';
 import UpdateProfile from './pages/UpdateProfile';
 import Listing from './pages/Listing';
+import SearchListings from './components/SearchListings';
+import SearchResults from './pages/SearchResults';
 
 export default function App() {
   return (
@@ -41,6 +43,10 @@ export default function App() {
       </Route>
 
       <Route path='/listing/:listingID' element={<Listing />}/>
+
+      <Route path='/search' element={<SearchListings />}/>
+
+      <Route path='/results' element={<SearchResults />}/>
 
     </Routes>
   </BrowserRouter>)
