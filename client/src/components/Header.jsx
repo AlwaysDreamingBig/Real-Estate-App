@@ -21,6 +21,11 @@ export default function Header() {
     
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!searchBarTerm.trim()) {
+            // Prevent form submission if the input is empty
+            return;
+        }
+        
         const queryString = createQueryString({ searchBarTerm });
         navigate(`/results?${queryString}`);
     };
