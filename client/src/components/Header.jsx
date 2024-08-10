@@ -1,15 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {FaSearch} from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { createQueryString } from './utility/createQuery';
 
 export default function Header() {
 
     const { currentUser } = useSelector(state => state.user);
     const navigate = useNavigate();
+    const [searchBarTerm, setSearchBarTerm] = useState(''); // State to manage the input value
+
 
     const handleFilter = () => {
-        navigate('search');
+        navigate('/search');
+    };
+
+    const handleChange = (e) => {
+        setSearchBarTerm(e.target.value);
+    };
+    
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const queryString = createQueryString({ searchBarTerm });
+        navigate(`/results?${queryString}`);
     };
 
   return (
@@ -47,14 +60,17 @@ export default function Header() {
 
             <div className='flex space-x-4'>
                 {/*Barre de recherche*/}
-                <form className='bg-gray-100 p-3 rounded-lg flex items-center'>
-                    <input 
-                        type="text" 
-                        placeholder='Search...' 
-                        className='bg-transparent focus:outline-none w-28 sm:w-80'
+                <form onSubmit={handleSubmit} className="bg-gray-100 p-3 rounded-lg flex items-center">
+                    <input
+                        type="text"
+                        placeholder="Search..."
+                        value={searchBarTerm}
+                        onChange={handleChange}
+                        className="bg-transparent focus:outline-none w-28 sm:w-80"
                     />
-
-                    <FaSearch className='text-slate-900'/>
+                    <button type="submit">
+                        <FaSearch className="text-slate-900" />
+                    </button>
                 </form>
 
                 <button onClick={handleFilter} className='italic'>

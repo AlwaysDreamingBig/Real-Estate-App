@@ -137,6 +137,7 @@ export const searchListings = async (req, res, next) => {
 
     // Search term with regex for case-insensitive search
     const searchTerm = req.query.searchTerm || '';
+    const searchBarTerm = req.query.searchBarTerm || '';
 
     // Sort field and order
     const sort = req.query.sort || 'createdAt';
@@ -203,6 +204,11 @@ export const searchListings = async (req, res, next) => {
       houseShareBedrooms: { $gte: minHouseShareBedrooms, $lte: maxHouseShareBedrooms },
       type: type ? { $regex: type, $options: 'i' } : { $exists: true }, // Handle type filter
       ...booleanFilters, // Spread the boolean feature filters into the query
+      $or: [
+        { name: { $regex: searchBarTerm, $options: 'i' } }, // searchBarTerm in name
+        { address: { $regex: searchBarTerm, $options: 'i' } }, // searchBarTerm in address
+        { description: { $regex: searchBarTerm, $options: 'i' } } // searchBarTerm in address
+      ]
     };
 
     // Find listings with filters, sorting, and pagination
