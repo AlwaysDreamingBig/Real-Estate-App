@@ -211,6 +211,12 @@ export const searchListings = async (req, res, next) => {
       ]
     };
 
+    // Get the total count of matching listings
+    const totalCount = await Listing.countDocuments(query);
+
+    // Calculate total pages
+    const totalPages = Math.ceil(totalCount / limit);
+
     // Find listings with filters, sorting, and pagination
     const listings = await Listing.find(query)
       .sort({ [sort]: order })
@@ -218,7 +224,12 @@ export const searchListings = async (req, res, next) => {
       .skip(startIndex);
 
     // Return the listings
-    return res.status(200).json(listings);
+    return res.status(200).json({
+      listings,
+      totalCount,
+      totalPages,
+      currentPage: Math.floor(startIndex / limit) + 1
+    });
   } catch (error) {
     // Improved error handling
     return res.status(500).json({ message: 'An error occurred while searching for listings.', error: error.message });
