@@ -5,8 +5,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 const SearchListings = () => {
   const [formData, setFormData] = useState({
-    limit: 10,
-    startIndex: 0,
     offer: '',
     parking: '',
     searchTerm: '',
