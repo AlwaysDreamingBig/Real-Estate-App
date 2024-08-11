@@ -361,4 +361,34 @@ export const initialMessages = [
       icon: '🖥️',
     },
   ];
+
+  export const realEstateTips = [
+    {
+      title: '10 Tips for Buying Your First Home',
+      url: 'https://www.bankrate.com/mortgages/tips-for-first-time-home-buyers/',
+    },
+    {
+      title: 'How to Sell Your Home Faster',
+      url: 'https://realestate.usnews.com/real-estate/articles/secrets-to-selling-your-home-faster',
+    },
+    {
+      title: '9 Mistakes to Avoid When Renting an Apartment',
+      url: 'https://www.bealproperties.com/9-mistakes-to-avoid-when-renting-an-apartment/',
+    },
+  ];
+  
+  export const marketTrends = [
+    {
+      title: 'Current Real Estate Market Trends',
+      url: 'https://www.forbes.com/advisor/mortgages/real-estate/housing-market-predictions/',
+    },
+    {
+      title: 'Housing Market Trends and Insights',
+      url: 'https://www.oxfordeconomics.com/real-estate-economics-insights/',
+    },
+    {
+      title: 'Real Estate Market Outlook 2024',
+      url: 'https://www.jll.fr/fr/etudes-recherche/recherche/global/global-real-estate-outlook',
+    },
+  ];
   
