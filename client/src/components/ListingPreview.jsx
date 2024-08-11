@@ -14,7 +14,7 @@ const ListingCard = ({ listing }) => {
 
   return (
     <Link to={`/listing/${listing._id}`} >
-      <div className="max-w-sm rounded overflow-hidden shadow-lg m-4 h-[500px] w-[4000px] p-4">
+      <div className="bg-white rounded-lg max-w-sm overflow-hidden shadow-lg m-4 h-[500px] w-[4000px] p-4">
         <img className="w-full h-60 object-cover border-4 border-white rounded-lg" src={imageUrl} alt={listing.name} />
 
         <div className="px-2 py-4">
