@@ -314,4 +314,51 @@ export const initialMessages = [
   ];
   
   export default comments;
+
+  export const steps = [
+    {
+      title: 'Browse Listings',
+      description: 'Search through our extensive database of properties with advanced filters to find exactly what you’re looking for.',
+      icon: '📍',
+    },
+    {
+      title: 'Schedule a Viewing',
+      description: 'Book a property viewing directly through the app and see your future home in person.',
+      icon: '📅',
+    },
+    {
+      title: 'Make an Offer',
+      description: 'Submit your offer on properties and communicate directly with sellers through our secure platform.',
+      icon: '💬',
+    },
+    {
+      title: 'Close the Deal',
+      description: 'Complete the purchase or rental process with the help of our expert team and streamline the paperwork.',
+      icon: '✍️',
+    },
+  ];
+  
+  
+  export const uniquePoints = [
+    {
+      title: 'Verified Listings',
+      description: 'All our listings are verified to ensure you get accurate and trustworthy information.',
+      icon: '✔️',
+    },
+    {
+      title: 'Easy Search',
+      description: 'Our advanced search features allow you to find properties that perfectly match your criteria.',
+      icon: '🔍',
+    },
+    {
+      title: 'Customer Support',
+      description: 'Our dedicated support team is available 24/7 to assist you with any queries or issues.',
+      icon: '📞',
+    },
+    {
+      title: 'Virtual Tours',
+      description: 'Explore properties through immersive virtual tours right from the comfort of your home.',
+      icon: '🖥️',
+    },
+  ];
   

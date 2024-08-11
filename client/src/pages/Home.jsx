@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import HeroSection from '../components/HeroSection';
 import PropertiesSection from '../components/PropertiesSection';
+import HowItWorksSection from '../components/HowItWorksSection ';
 
 const HomePage = () => {
   const [listings, setListings] = useState([]);
@@ -52,6 +53,10 @@ const HomePage = () => {
 
       <section id="properties" className="mt-20">
         <PropertiesSection listings={listings} loading={loading} error={error} />
+      </section>
+
+      <section className="mt-20">
+        <HowItWorksSection />
       </section>
     </div>
   );
