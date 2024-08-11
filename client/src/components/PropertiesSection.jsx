@@ -1,9 +1,20 @@
-import React from 'react'
+import React from 'react';
+import ListingCard from './ListingPreview';
 
-const PropertiesSection = () => {
+const PropertiesSection = ({ listings }) => {
   return (
-    <div>PropertiesSection</div>
-  )
-}
+    <div className="container mx-auto px-4 mt-10">
+      <h2 className="text-4xl font-serif font-semibold text-gray-600 text-start ml-8 mb-8">Featured Listings</h2>
 
-export default PropertiesSection
+      <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        {listings.map((property, index) => (
+          <div key={index}>
+            <ListingCard listing={property}/>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default PropertiesSection;
