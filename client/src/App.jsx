@@ -12,6 +12,7 @@ import UpdateProfile from './pages/UpdateProfile';
 import Listing from './pages/Listing';
 import SearchListings from './components/SearchListings';
 import SearchResults from './pages/SearchResults';
+import AboutPage from './pages/About';
 
 export default function App() {
   return (
@@ -24,7 +25,7 @@ export default function App() {
 
       <Route path="/sign-up" element={<SignUp />}/>
 
-      <Route path='/about' element={<About />}/>
+      <Route path='/about' element={<AboutPage />}/>
        
       <Route element={<PrivateRoute />}>
         <Route path='/profile' element={<Profile />}/>
