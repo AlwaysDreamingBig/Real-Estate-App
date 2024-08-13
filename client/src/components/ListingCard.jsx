@@ -48,7 +48,7 @@ const ListingCard = ({ imgUrl, listingName, listingID, onDelete, listingAddress,
             <Link to={`/listing/${listingID}`}>
               <FontAwesomeIcon 
                 icon={faEye} 
-                className="text-green-600 cursor-pointer text-xs" 
+                className="text-green-600 cursor-pointer text-xs mr-2 mb-1" 
                 aria-label="See listing"
               />
             </Link>
