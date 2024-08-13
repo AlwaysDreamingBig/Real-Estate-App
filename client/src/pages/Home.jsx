@@ -4,6 +4,7 @@ import HeroSection from '../components/HeroSection';
 import PropertiesSection from '../components/PropertiesSection';
 import HowItWorksSection from '../components/HowItWorksSection ';
 import BlogNewsSection from '../components/BlogNewsSection';
+import ChatbotHelpSection from '../components/ChatbotHelpSection';
 
 const HomePage = () => {
   const [listings, setListings] = useState([]);
@@ -62,6 +63,10 @@ const HomePage = () => {
 
       <section className="mt-20">
         <BlogNewsSection />
+      </section>
+
+      <section className="mt-20">
+        <ChatbotHelpSection />
       </section>
     </div>
   );
